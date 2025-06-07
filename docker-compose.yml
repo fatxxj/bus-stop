@@ -1,0 +1,55 @@
+services:
+  # SQL Server Database
+  sqlserver:
+    image: mcr.microsoft.com/mssql/server:2022-latest
+    container_name: tugs-sqlserver
+    environment:
+      - SA_PASSWORD=YourStrong@Passw0rd
+      - ACCEPT_EULA=Y
+      - MSSQL_PID=Express
+    ports:
+      - "1433:1433"
+    volumes:
+      - sqlserver_data:/var/opt/mssql
+    networks:
+      - tugs-network
+    restart: unless-stopped
+
+  # .NET Backend API
+  backend:
+    build:
+      context: ./backend
+      dockerfile: API/Dockerfile
+    container_name: tugs-backend
+    environment:
+      - ASPNETCORE_ENVIRONMENT=Development
+      - ASPNETCORE_URLS=http://+:5100
+      - ConnectionStrings__DefaultConnection=Server=sqlserver,1433;Database=TugsDB;User Id=sa;Password=YourStrong@Passw0rd;TrustServerCertificate=true;
+    ports:
+      - "5100:5100"
+    depends_on:
+      - sqlserver
+    networks:
+      - tugs-network
+    restart: unless-stopped
+
+  # Angular Frontend
+  frontend:
+    build:
+      context: ./frontend
+      dockerfile: Dockerfile
+    container_name: tugs-frontend
+    ports:
+      - "4200:4200"
+    depends_on:
+      - backend
+    networks:
+      - tugs-network
+    restart: unless-stopped
+
+networks:
+  tugs-network:
+    driver: bridge
+
+volumes:
+  sqlserver_data:
