@@ -4,6 +4,8 @@ export interface Stop {
     description: string;
     x: number;
     y: number;
+    isActive: boolean;
+    connections?: number[];
 }
 
 export interface StopCreate {
@@ -11,4 +13,5 @@ export interface StopCreate {
     description: string;
     x: number;
     y: number;
+    isActive?: boolean;
 } 

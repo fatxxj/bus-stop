@@ -1,61 +1,208 @@
-<div class="container">
-  <div class="header">
-    <h2>Journeys</h2>
-    <button mat-raised-button color="primary" (click)="openJourneyForm()">
-      Add New Journey
+<div class="journey-management-container">
+  <!-- Header Section -->
+  <div class="management-header">
+    <div class="header-content">
+      <div class="header-info">
+        <h3 class="section-title">Journey Routes</h3>
+        <p class="section-subtitle">Manage your bus routes and schedules efficiently</p>
+      </div>
+      <div class="header-actions">
+        <button 
+          class="btn btn-primary add-journey-btn" 
+          (click)="openJourneyForm()"
+          title="Create New Journey">
+          <svg width="20" height="20" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+            <path d="M12 5V19M5 12H19" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+          </svg>
+          <span>New Journey</span>
+        </button>
+      </div>
+    </div>
+  </div>
+
+  <!-- Statistics Cards -->
+  <div class="stats-grid">
+    <div class="stat-card">
+      <div class="stat-icon active">
+        <svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+          <path d="M9 17H7V10L12 5L17 10V17H15" stroke="currentColor" stroke-width="2"/>
+        </svg>
+      </div>
+      <div class="stat-content">
+        <div class="stat-number">{{dataSource.data.length}}</div>
+        <div class="stat-label">Total Routes</div>
+      </div>
+    </div>
+    
+    <div class="stat-card">
+      <div class="stat-icon success">
+        <svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+          <path d="M9 12L11 14L15 10M21 12C21 16.9706 16.9706 21 12 21C7.02944 21 3 16.9706 3 12C3 7.02944 7.02944 3 12 3C16.9706 3 21 7.02944 21 12Z" stroke="currentColor" stroke-width="2"/>
+        </svg>
+      </div>
+      <div class="stat-content">
+        <div class="stat-number">{{dataSource.data.length}}</div>
+        <div class="stat-label">Active Routes</div>
+      </div>
+    </div>
+    
+    <div class="stat-card">
+      <div class="stat-icon warning">
+        <svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+          <circle cx="12" cy="12" r="10" stroke="currentColor" stroke-width="2"/>
+          <path d="12 8V12L15 15" stroke="currentColor" stroke-width="2"/>
+        </svg>
+      </div>
+      <div class="stat-content">
+        <div class="stat-number">{{getTotalStops()}}</div>
+        <div class="stat-label">Total Stops</div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Search and Filter Section -->
+  <div class="search-section card">
+    <div class="search-header">
+      <h4>Search & Filter</h4>
+    </div>
+    <div class="search-content">
+      <div class="search-input-group">
+        <div class="search-icon">
+          <svg width="20" height="20" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+            <circle cx="11" cy="11" r="8" stroke="currentColor" stroke-width="2"/>
+            <path d="M21 21L16.65 16.65" stroke="currentColor" stroke-width="2"/>
+          </svg>
+        </div>
+        <input 
+          type="text" 
+          class="search-input" 
+          placeholder="Search by journey code, description, or stops..."
+          (keyup)="applyFilter($event)"
+          #input>
+        <button class="search-clear" *ngIf="input.value" (click)="clearSearch(input)">
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+            <path d="M18 6L6 18M6 6L18 18" stroke="currentColor" stroke-width="2"/>
+          </svg>
+        </button>
+      </div>
+    </div>
+  </div>
+
+  <!-- Journey Cards Grid -->
+  <div class="journeys-grid" *ngIf="!loading && dataSource.data.length > 0">
+    <div class="journey-card card" *ngFor="let journey of getFilteredJourneys()" 
+         [class.highlight]="isHighlighted(journey)">
+      
+      <!-- Card Header -->
+      <div class="card-header">
+        <div class="journey-info">
+          <div class="journey-code">{{journey.code}}</div>
+          <div class="journey-badge">
+            <span class="badge badge-info">{{journey.stops.length || 0}} stops</span>
+          </div>
+        </div>
+        <div class="card-actions">
+          <button 
+            class="action-btn view-btn" 
+            (click)="viewJourney(journey)"
+            title="View Details">
+            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+              <path d="M1 12S5 4 12 4S23 12 23 12S19 20 12 20S1 12 1 12Z" stroke="currentColor" stroke-width="2"/>
+              <circle cx="12" cy="12" r="3" stroke="currentColor" stroke-width="2"/>
+            </svg>
+          </button>
+          <button 
+            class="action-btn edit-btn" 
+            (click)="openJourneyForm(journey)"
+            title="Edit Journey">
+            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+              <path d="M11 4H4C3.46957 4 2.96086 4.21071 2.58579 4.58579C2.21071 4.96086 2 5.46957 2 6V20C2 20.5304 2.21071 21.0391 2.58579 21.4142C2.96086 21.7893 3.46957 22 4 22H18C18.5304 22 19.0391 21.7893 19.4142 21.4142C19.7893 21.0391 20 20.5304 20 20V13" stroke="currentColor" stroke-width="2"/>
+              <path d="M18.5 2.5C18.8978 2.10217 19.4374 1.87868 20 1.87868C20.5626 1.87868 21.1022 2.10217 21.5 2.5C21.8978 2.89783 22.1213 3.43739 22.1213 4C22.1213 4.56261 21.8978 5.10217 21.5 5.5L12 15L8 16L9 12L18.5 2.5Z" stroke="currentColor" stroke-width="2"/>
+            </svg>
+          </button>
+          <button 
+            class="action-btn delete-btn" 
+            (click)="deleteJourney(journey)"
+            title="Delete Journey">
+            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+              <polyline points="3,6 5,6 21,6" stroke="currentColor" stroke-width="2"/>
+              <path d="M19 6L17 20C17 20.5304 16.7893 21.0391 16.4142 21.4142C16.0391 21.7893 15.5304 22 15 22H9C8.46957 22 7.96086 21.7893 7.58579 21.4142C7.21071 21.0391 7 20.5304 7 20L5 6M10 11V17M14 11V17M14 6V4C14 3.46957 13.7893 2.96086 13.4142 2.58579C13.0391 2.21071 12.5304 2 12 2C11.4696 2 10.9609 2.21071 10.5858 2.58579C10.2107 2.96086 10 3.46957 10 4V6" stroke="currentColor" stroke-width="2"/>
+            </svg>
+          </button>
+        </div>
+      </div>
+
+      <!-- Card Content -->
+      <div class="card-content">
+        <div class="journey-description">
+          <p>{{journey.description}}</p>
+        </div>
+        
+        <div class="journey-stops" *ngIf="journey.stops && journey.stops.length > 0">
+          <div class="stops-header">
+            <span class="stops-title">Route Stops</span>
+            <span class="stops-count">{{journey.stops.length}} stops</span>
+          </div>
+          <div class="stops-preview">
+            <div class="stop-item" *ngFor="let stop of journey.stops.slice(0, 3); let i = index">
+              <span class="stop-order">{{i + 1}}</span>
+              <span class="stop-code">{{stop.code}}</span>
+              <span class="stop-name">{{stop.description}}</span>
+            </div>
+            <div class="more-stops" *ngIf="journey.stops.length > 3">
+              <span>+{{journey.stops.length - 3}} more stops</span>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Card Footer -->
+      <div class="card-footer">
+        <div class="journey-status">
+          <span class="status-indicator active"></span>
+          <span class="status-text">Active Route</span>
+        </div>
+        <div class="last-updated">
+          <span class="updated-text">Last updated: Today</span>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Empty State -->
+  <div class="empty-state" *ngIf="!loading && dataSource.data.length === 0">
+    <div class="empty-icon">
+      <svg width="64" height="64" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+        <path d="M9 17H7V10L12 5L17 10V17H15" stroke="currentColor" stroke-width="2"/>
+        <path d="M13 17V13H11V17" stroke="currentColor" stroke-width="2"/>
+      </svg>
+    </div>
+    <h3>No Journeys Found</h3>
+    <p>Start by creating your first bus journey route to manage your transportation network.</p>
+    <button class="btn btn-primary" (click)="openJourneyForm()">
+      <svg width="20" height="20" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+        <path d="M12 5V19M5 12H19" stroke="currentColor" stroke-width="2"/>
+      </svg>
+      Create First Journey
     </button>
   </div>
 
-  <mat-form-field class="filter-field">
-    <mat-label>Filter</mat-label>
-    <input matInput (keyup)="applyFilter($event)" placeholder="Search journeys..." #input>
-  </mat-form-field>
-
-  <div class="table-container mat-elevation-z8">
-    <table mat-table [dataSource]="dataSource" matSort>
-      <!-- Code Column -->
-      <ng-container matColumnDef="code">
-        <th mat-header-cell *matHeaderCellDef mat-sort-header>Code</th>
-        <td mat-cell *matCellDef="let journey">{{journey.code}}</td>
-      </ng-container>
-
-      <!-- Description Column -->
-      <ng-container matColumnDef="description">
-        <th mat-header-cell *matHeaderCellDef mat-sort-header>Description</th>
-        <td mat-cell *matCellDef="let journey">{{journey.description}}</td>
-      </ng-container>
-
-      <!-- Stops Column -->
-      <ng-container matColumnDef="stops">
-        <th mat-header-cell *matHeaderCellDef>Stops</th>
-        <td mat-cell *matCellDef="let journey">{{journey.stops.length}} stops</td>
-      </ng-container>
-
-      <!-- Actions Column -->
-      <ng-container matColumnDef="actions">
-        <th mat-header-cell *matHeaderCellDef>Actions</th>
-        <td mat-cell *matCellDef="let journey">
-          <button mat-icon-button color="primary" (click)="openJourneyDetails(journey)" matTooltip="View Details">
-            <mat-icon>visibility</mat-icon>
-          </button>
-          <button mat-icon-button color="accent" (click)="openJourneyForm(journey)" matTooltip="Edit">
-            <mat-icon>edit</mat-icon>
-          </button>
-          <button mat-icon-button color="warn" (click)="deleteJourney(journey.id)" matTooltip="Delete">
-            <mat-icon>delete</mat-icon>
-          </button>
-        </td>
-      </ng-container>
-
-      <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
-      <tr mat-row *matRowDef="let row; columns: displayedColumns;"></tr>
-
-      <!-- Row shown when there is no matching data. -->
-      <tr class="mat-row" *matNoDataRow>
-        <td class="mat-cell" colspan="4">No data matching the filter "{{input.value}}"</td>
-      </tr>
-    </table>
-
-    <mat-paginator [pageSizeOptions]="[5, 10, 25, 100]" aria-label="Select page of journeys"></mat-paginator>
+  <!-- Loading State -->
+  <div class="loading-state" *ngIf="loading">
+    <div class="spinner"></div>
+    <p>Loading journeys...</p>
   </div>
-</div> 
+
+  <!-- No Results State -->
+  <div class="no-results" *ngIf="!loading && dataSource.data.length > 0 && getFilteredJourneys().length === 0">
+    <div class="no-results-icon">
+      <svg width="48" height="48" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+        <circle cx="11" cy="11" r="8" stroke="currentColor" stroke-width="2"/>
+        <path d="M21 21L16.65 16.65" stroke="currentColor" stroke-width="2"/>
+      </svg>
+    </div>
+    <h4>No matching results</h4>
+    <p>Try adjusting your search terms or filters</p>
+    <button class="btn btn-secondary" (click)="clearSearch(input)">Clear Search</button>
+  </div>
+</div>

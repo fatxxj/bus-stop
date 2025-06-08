@@ -82,9 +82,9 @@ export class StopListComponent implements OnInit {
     });
   }
 
-  deleteStop(id: number): void {
+  deleteStop(stop: Stop): void {
     if (confirm('Are you sure you want to delete this stop?')) {
-      this.stopService.deleteStop(id).subscribe({
+      this.stopService.deleteStop(stop.id).subscribe({
         next: () => {
           this.loadStops();
         },
@@ -99,5 +99,33 @@ export class StopListComponent implements OnInit {
   applyFilter(event: Event): void {
     const filterValue = (event.target as HTMLInputElement).value;
     this.dataSource.filter = filterValue.trim().toLowerCase();
+  }
+
+  getActiveStops(): number {
+    return this.dataSource.data.filter(stop => stop.isActive).length;
+  }
+
+  getRouteConnections(): number {
+    return this.dataSource.data.reduce((total, stop) => {
+      return total + (stop.connections?.length || 0);
+    }, 0);
+  }
+
+  clearSearch(input: HTMLInputElement): void {
+    input.value = '';
+    this.applyFilter({ target: { value: '' } } as any);
+  }
+
+  getFilteredStops(): Stop[] {
+    return this.dataSource.filteredData;
+  }
+
+  isHighlighted(stop: Stop): boolean {
+    // Add logic to highlight featured stops if needed
+    return false;
+  }
+
+  viewStop(stop: Stop): void {
+    this.openStopDetails(stop);
   }
 } 

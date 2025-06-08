@@ -82,9 +82,37 @@ export class JourneyListComponent implements OnInit {
     });
   }
 
-  deleteJourney(id: number): void {
+   getTotalStops(): number {
+    return this.dataSource.data.reduce((total, journey) => {
+      return total + (journey.stops?.length || 0);
+    }, 0);
+  }
+
+  getFilteredJourneys(): Journey[] {
+    return this.dataSource.filteredData;
+  }
+
+  isHighlighted(journey: Journey): boolean {
+    // Add logic to highlight featured journeys if needed
+    return false;
+  }
+
+  clearSearch(input: HTMLInputElement): void {
+    input.value = '';
+    this.applyFilter({ target: { value: '' } } as any);
+  }
+
+  viewJourney(journey: Journey): void {
+    const dialogRef = this.dialog.open(JourneyDetailsComponent, {
+      width: '800px',
+      data: journey
+    });
+  }
+
+
+  deleteJourney(journey: Journey): void {
     if (confirm('Are you sure you want to delete this journey?')) {
-      this.journeyService.deleteJourney(id).subscribe({
+      this.journeyService.deleteJourney(journey.id).subscribe({
         next: () => {
           this.loadJourneys();
         },
