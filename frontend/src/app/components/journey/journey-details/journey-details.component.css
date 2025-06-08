@@ -1,0 +1,28 @@
+.details-container {
+  padding: 20px 0;
+}
+
+.detail-item {
+  margin-bottom: 20px;
+}
+
+.detail-item h3 {
+  color: #666;
+  margin-bottom: 8px;
+  font-size: 16px;
+}
+
+.detail-item p {
+  margin: 0;
+  font-size: 18px;
+}
+
+mat-list {
+  max-height: 300px;
+  overflow-y: auto;
+}
+
+mat-list-item {
+  margin-bottom: 8px;
+  border-bottom: 1px solid #eee;
+} 

@@ -1,0 +1,19 @@
+.form-container {
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+  padding: 20px 0;
+}
+
+.full-width {
+  width: 100%;
+}
+
+.coordinates-container {
+  display: flex;
+  gap: 20px;
+}
+
+.coordinates-container mat-form-field {
+  flex: 1;
+} 

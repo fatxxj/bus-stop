@@ -1,0 +1,43 @@
+<h2 mat-dialog-title>{{isEditMode ? 'Edit' : 'Create'}} Stop</h2>
+
+<form [formGroup]="stopForm" (ngSubmit)="onSubmit()">
+  <mat-dialog-content>
+    <div class="form-container">
+      <mat-form-field appearance="outline" class="full-width">
+        <mat-label>Code</mat-label>
+        <input matInput formControlName="code" placeholder="Enter stop code">
+        <mat-error *ngIf="stopForm.get('code')?.hasError('required')">Code is required</mat-error>
+        <mat-error *ngIf="stopForm.get('code')?.hasError('pattern')">Code must contain only letters and numbers</mat-error>
+      </mat-form-field>
+
+      <mat-form-field appearance="outline" class="full-width">
+        <mat-label>Description</mat-label>
+        <textarea matInput formControlName="description" placeholder="Enter stop description"></textarea>
+        <mat-error *ngIf="stopForm.get('description')?.hasError('required')">Description is required</mat-error>
+      </mat-form-field>
+
+      <div class="coordinates-container">
+        <mat-form-field appearance="outline">
+          <mat-label>X Coordinate</mat-label>
+          <input matInput type="number" formControlName="x" placeholder="Enter X coordinate">
+          <mat-error *ngIf="stopForm.get('x')?.hasError('required')">X coordinate is required</mat-error>
+          <mat-error *ngIf="stopForm.get('x')?.hasError('pattern')">X coordinate must be a valid number</mat-error>
+        </mat-form-field>
+
+        <mat-form-field appearance="outline">
+          <mat-label>Y Coordinate</mat-label>
+          <input matInput type="number" formControlName="y" placeholder="Enter Y coordinate">
+          <mat-error *ngIf="stopForm.get('y')?.hasError('required')">Y coordinate is required</mat-error>
+          <mat-error *ngIf="stopForm.get('y')?.hasError('pattern')">Y coordinate must be a valid number</mat-error>
+        </mat-form-field>
+      </div>
+    </div>
+  </mat-dialog-content>
+
+  <mat-dialog-actions align="end">
+    <button mat-button type="button" (click)="onCancel()">Cancel</button>
+    <button mat-raised-button color="primary" type="submit" [disabled]="!stopForm.valid">
+      {{isEditMode ? 'Update' : 'Create'}}
+    </button>
+  </mat-dialog-actions>
+</form> 

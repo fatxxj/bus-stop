@@ -1,12 +1,13 @@
-
 import { Component, inject, effect } from '@angular/core';
 import { RouterOutlet } from '@angular/router';
 import { NgIf, NgFor } from '@angular/common';
 import { WeatherService, WeatherForecast } from './services/weather.service';
+import { JourneyListComponent } from './components/journey/journey-list/journey-list.component';
+import { StopListComponent } from './components/stop/stop-list/stop-list.component';
 
 @Component({
   selector: 'app-root',
-  imports: [RouterOutlet, NgIf, NgFor],
+  imports: [RouterOutlet, NgIf, NgFor, JourneyListComponent, StopListComponent],
   templateUrl: './app.html',
   styleUrl: './app.css'
 })

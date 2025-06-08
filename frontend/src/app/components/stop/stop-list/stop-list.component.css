@@ -1,0 +1,41 @@
+.container {
+  padding: 20px;
+}
+
+.header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 20px;
+}
+
+.filter-field {
+  width: 100%;
+  margin-bottom: 20px;
+}
+
+.table-container {
+  overflow: auto;
+}
+
+table {
+  width: 100%;
+}
+
+.mat-column-actions {
+  width: 120px;
+  text-align: center;
+}
+
+.mat-column-code {
+  width: 150px;
+}
+
+.mat-column-coordinates {
+  width: 150px;
+  text-align: center;
+}
+
+.mat-mdc-row:hover {
+  background-color: #f5f5f5;
+} 
