@@ -36,14 +36,20 @@
   <nav class="main-navigation">
     <div class="container">
       <div class="nav-tabs">
-        <button class="nav-tab active" id="journeys-tab">
+        <button 
+          class="nav-tab" 
+          [class.active]="activeTab === 'journeys'"
+          (click)="switchTab('journeys')">
           <svg width="20" height="20" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
             <path d="M9 17H7V10L12 5L17 10V17H15" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
             <path d="M13 17V13H11V17" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
           </svg>
           <span>Journey Management</span>
         </button>
-        <button class="nav-tab" id="stops-tab">
+        <button 
+          class="nav-tab"
+          [class.active]="activeTab === 'stops'"
+          (click)="switchTab('stops')">
           <svg width="20" height="20" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
             <circle cx="12" cy="12" r="10" stroke="currentColor" stroke-width="2"/>
             <path d="12 2L12 12L22 12" stroke="currentColor" stroke-width="2" stroke-linecap="round"/>
@@ -57,29 +63,17 @@
   <!-- Main Content Area -->
   <main class="main-content">
     <div class="container">
-      <div class="content-sections">
+      <div class="content-wrapper">
         <!-- Journey Section -->
-        <section class="content-section active" id="journeys-section">
-          <div class="section-header">
-            <div class="section-title">
-              <h2>Journey Management</h2>
-              <p class="section-description">Manage bus routes, schedules, and stop sequences</p>
-            </div>
-          </div>
-          <div class="section-content">
+        <section class="content-section" *ngIf="activeTab === 'journeys'">
+          <div class="section-container">
             <app-journey-list></app-journey-list>
           </div>
         </section>
 
         <!-- Stops Section -->
-        <section class="content-section" id="stops-section">
-          <div class="section-header">
-            <div class="section-title">
-              <h2>Stop Management</h2>
-              <p class="section-description">Maintain bus stops, locations, and passenger facilities</p>
-            </div>
-          </div>
-          <div class="section-content">
+        <section class="content-section" *ngIf="activeTab === 'stops'">
+          <div class="section-container">
             <app-stop-list></app-stop-list>
           </div>
         </section>

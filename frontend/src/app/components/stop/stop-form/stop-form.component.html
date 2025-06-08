@@ -1,43 +1,77 @@
-<h2 mat-dialog-title>{{isEditMode ? 'Edit' : 'Create'}} Stop</h2>
 
-<form [formGroup]="stopForm" (ngSubmit)="onSubmit()">
-  <mat-dialog-content>
-    <div class="form-container">
-      <mat-form-field appearance="outline" class="full-width">
-        <mat-label>Code</mat-label>
-        <input matInput formControlName="code" placeholder="Enter stop code">
-        <mat-error *ngIf="stopForm.get('code')?.hasError('required')">Code is required</mat-error>
-        <mat-error *ngIf="stopForm.get('code')?.hasError('pattern')">Code must contain only letters and numbers</mat-error>
-      </mat-form-field>
+<div class="modern-dialog">
+  <div class="dialog-header">
+    <h2 class="dialog-title">
+      <svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+        <path d="M12 5V19M5 12H19" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+      </svg>
+      {{isEditMode ? 'Edit' : 'Create'}} Stop
+    </h2>
+  </div>
 
-      <mat-form-field appearance="outline" class="full-width">
-        <mat-label>Description</mat-label>
-        <textarea matInput formControlName="description" placeholder="Enter stop description"></textarea>
-        <mat-error *ngIf="stopForm.get('description')?.hasError('required')">Description is required</mat-error>
-      </mat-form-field>
-
-      <div class="coordinates-container">
-        <mat-form-field appearance="outline">
-          <mat-label>X Coordinate</mat-label>
-          <input matInput type="number" formControlName="x" placeholder="Enter X coordinate">
-          <mat-error *ngIf="stopForm.get('x')?.hasError('required')">X coordinate is required</mat-error>
-          <mat-error *ngIf="stopForm.get('x')?.hasError('pattern')">X coordinate must be a valid number</mat-error>
+  <form [formGroup]="stopForm" (ngSubmit)="onSubmit()">
+    <div class="dialog-content">
+      <div class="form-grid">
+        <mat-form-field appearance="outline" class="modern-field">
+          <mat-label>Stop Code</mat-label>
+          <input matInput formControlName="code" placeholder="Enter stop code">
+          <mat-icon matPrefix>tag</mat-icon>
+          <mat-error *ngIf="stopForm.get('code')?.hasError('required')">Code is required</mat-error>
+          <mat-error *ngIf="stopForm.get('code')?.hasError('pattern')">Code must contain only letters and numbers</mat-error>
         </mat-form-field>
 
-        <mat-form-field appearance="outline">
+        <mat-form-field appearance="outline" class="modern-field full-width">
+          <mat-label>Description</mat-label>
+          <textarea matInput formControlName="description" placeholder="Enter stop description" rows="3"></textarea>
+          <mat-icon matPrefix>description</mat-icon>
+          <mat-error *ngIf="stopForm.get('description')?.hasError('required')">Description is required</mat-error>
+        </mat-form-field>
+
+        <mat-form-field appearance="outline" class="modern-field">
+          <mat-label>X Coordinate</mat-label>
+          <input matInput formControlName="x" placeholder="Enter X coordinate" type="number">
+          <mat-icon matPrefix>location_on</mat-icon>
+          <mat-error *ngIf="stopForm.get('x')?.hasError('required')">X coordinate is required</mat-error>
+          <mat-error *ngIf="stopForm.get('x')?.hasError('pattern')">Please enter a valid coordinate</mat-error>
+        </mat-form-field>
+
+        <mat-form-field appearance="outline" class="modern-field">
           <mat-label>Y Coordinate</mat-label>
-          <input matInput type="number" formControlName="y" placeholder="Enter Y coordinate">
+          <input matInput formControlName="y" placeholder="Enter Y coordinate" type="number">
+          <mat-icon matPrefix>location_on</mat-icon>
           <mat-error *ngIf="stopForm.get('y')?.hasError('required')">Y coordinate is required</mat-error>
-          <mat-error *ngIf="stopForm.get('y')?.hasError('pattern')">Y coordinate must be a valid number</mat-error>
+          <mat-error *ngIf="stopForm.get('y')?.hasError('pattern')">Please enter a valid coordinate</mat-error>
         </mat-form-field>
       </div>
-    </div>
-  </mat-dialog-content>
 
-  <mat-dialog-actions align="end">
-    <button mat-button type="button" (click)="onCancel()">Cancel</button>
-    <button mat-raised-button color="primary" type="submit" [disabled]="!stopForm.valid">
-      {{isEditMode ? 'Update' : 'Create'}}
-    </button>
-  </mat-dialog-actions>
-</form> 
+      <div class="location-preview" *ngIf="stopForm.get('x')?.value && stopForm.get('y')?.value">
+        <div class="preview-header">
+          <h3>
+            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+              <path d="M21 10C21 17L12 23L3 10C3 6.13401 7.13401 2 11 2H13C16.866 2 21 6.13401 21 10Z" stroke="currentColor" stroke-width="2"/>
+              <circle cx="12" cy="10" r="3" stroke="currentColor" stroke-width="2"/>
+            </svg>
+            Location Preview
+          </h3>
+        </div>
+        <div class="coordinates-display">
+          <div class="coordinate-item">
+            <span class="label">X:</span>
+            <span class="value">{{stopForm.get('x')?.value}}</span>
+          </div>
+          <div class="coordinate-item">
+            <span class="label">Y:</span>
+            <span class="value">{{stopForm.get('y')?.value}}</span>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="dialog-actions">
+      <button type="button" class="btn btn-secondary" (click)="onCancel()">Cancel</button>
+      <button type="submit" class="btn btn-primary" [disabled]="!stopForm.valid">
+        {{isEditMode ? 'Update' : 'Create'}} Stop
+      </button>
+    </div>
+  </form>
+</div>

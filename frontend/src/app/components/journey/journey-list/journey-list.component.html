@@ -1,22 +1,21 @@
+
 <div class="journey-management-container">
   <!-- Header Section -->
-  <div class="management-header">
-    <div class="header-content">
-      <div class="header-info">
-        <h3 class="section-title">Journey Routes</h3>
-        <p class="section-subtitle">Manage your bus routes and schedules efficiently</p>
-      </div>
-      <div class="header-actions">
-        <button 
-          class="btn btn-primary add-journey-btn" 
-          (click)="openJourneyForm()"
-          title="Create New Journey">
-          <svg width="20" height="20" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
-            <path d="M12 5V19M5 12H19" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
-          </svg>
-          <span>New Journey</span>
-        </button>
-      </div>
+  <div class="section-header">
+    <div class="section-title">
+      <h2>Journey Management</h2>
+      <p class="section-description">Manage bus routes, schedules, and stop sequences</p>
+    </div>
+    <div class="header-actions">
+      <button 
+        class="btn btn-primary add-journey-btn" 
+        (click)="openJourneyForm()"
+        title="Create New Journey">
+        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+          <path d="M12 5V19M5 12H19" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+        </svg>
+        <span>New Journey</span>
+      </button>
     </div>
   </div>
 

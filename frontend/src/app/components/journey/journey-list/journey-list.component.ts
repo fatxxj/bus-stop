@@ -29,9 +29,7 @@ import { JourneyDetailsComponent } from '../journey-details/journey-details.comp
     MatFormFieldModule,
     MatInputModule,
     MatPaginatorModule,
-    MatSortModule,
-    JourneyFormComponent,
-    JourneyDetailsComponent
+    MatSortModule
   ]
 })
 export class JourneyListComponent implements OnInit {

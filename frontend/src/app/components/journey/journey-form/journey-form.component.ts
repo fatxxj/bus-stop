@@ -162,4 +162,8 @@ export class JourneyFormComponent implements OnInit {
       };
     });
   }
+
+  isStopSelected(stop: Stop): boolean {
+    return this.selectedStops.some(s => s.id === stop.id);
+  }
 } 

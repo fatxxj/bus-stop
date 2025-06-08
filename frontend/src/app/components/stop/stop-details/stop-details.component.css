@@ -1,82 +1,171 @@
 
-.details-container {
-  padding: 8px 0;
+.modern-dialog {
+  max-width: 500px;
+  width: 100%;
 }
 
-.details-title {
-  font-size: 1.5rem;
+.dialog-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 1.5rem 1.5rem 0;
+  border-bottom: 1px solid #e2e8f0;
+  margin-bottom: 1.5rem;
+}
+
+.dialog-title {
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+  font-size: 1.25rem;
   font-weight: 600;
-  color: #1e293b;
-  margin-bottom: 32px;
-  text-align: center;
-  background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
-  -webkit-background-clip: text;
-  -webkit-text-fill-color: transparent;
-  background-clip: text;
+  color: #1a202c;
+  margin: 0;
 }
 
-.detail-item {
-  margin-bottom: 24px;
-  padding: 20px;
+.dialog-title svg {
+  color: #667eea;
+}
+
+.dialog-close {
+  background: none;
+  border: none;
+  padding: 0.5rem;
+  border-radius: 6px;
+  cursor: pointer;
+  color: #718096;
+  transition: all 0.2s;
+}
+
+.dialog-close:hover {
+  background: #f7fafc;
+  color: #e53e3e;
+}
+
+.dialog-content {
+  padding: 0 1.5rem;
+  max-height: 70vh;
+  overflow-y: auto;
+}
+
+.details-grid {
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: 1rem;
+  margin-bottom: 2rem;
+}
+
+.detail-card {
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+  padding: 1.25rem;
   background: #f8fafc;
   border-radius: 12px;
-  border-left: 4px solid #667eea;
-  transition: all 0.3s ease;
+  border: 1px solid #e2e8f0;
 }
 
-.detail-item:hover {
-  background: #f1f5f9;
-  transform: translateX(4px);
+.detail-icon {
+  width: 40px;
+  height: 40px;
+  background: linear-gradient(135deg, #667eea, #764ba2);
+  border-radius: 10px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: white;
+  flex-shrink: 0;
 }
 
-.detail-item h3 {
-  color: #475569;
-  margin-bottom: 12px;
+.detail-content h3 {
   font-size: 0.875rem;
-  font-weight: 600;
+  font-weight: 500;
+  color: #718096;
+  margin: 0 0 0.25rem 0;
   text-transform: uppercase;
   letter-spacing: 0.05em;
 }
 
-.detail-item p {
+.detail-value {
+  font-size: 1rem;
+  font-weight: 600;
+  color: #1a202c;
   margin: 0;
-  font-size: 1.125rem;
-  font-weight: 500;
-  color: #1e293b;
 }
 
-.coordinates-item {
-  border-left-color: #10b981;
-}
-
-.coordinates-item p {
-  font-family: 'Courier New', monospace;
-  background: white;
-  padding: 12px 16px;
-  border-radius: 8px;
+.location-section {
+  background: #f8fafc;
+  border-radius: 12px;
+  padding: 1.5rem;
   border: 1px solid #e2e8f0;
-  display: inline-block;
 }
 
-.close-button-container {
+.section-header h3 {
   display: flex;
-  justify-content: center;
-  margin-top: 32px;
-  padding-top: 24px;
+  align-items: center;
+  gap: 0.75rem;
+  font-size: 1.125rem;
+  font-weight: 600;
+  color: #1a202c;
+  margin: 0 0 1rem 0;
+}
+
+.section-header svg {
+  color: #667eea;
+}
+
+.location-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 1rem;
+}
+
+.coordinate-card {
+  background: white;
+  border-radius: 8px;
+  padding: 1rem;
+  border: 1px solid #e2e8f0;
+  text-align: center;
+}
+
+.coordinate-label {
+  font-size: 0.75rem;
+  color: #718096;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+  margin-bottom: 0.5rem;
+}
+
+.coordinate-value {
+  font-size: 1.25rem;
+  font-weight: 700;
+  color: #667eea;
+}
+
+.dialog-actions {
+  display: flex;
+  justify-content: flex-end;
+  gap: 0.75rem;
+  padding: 1.5rem;
   border-top: 1px solid #e2e8f0;
+  margin-top: 1.5rem;
 }
 
-.close-button {
-  background: #64748b !important;
-  color: white !important;
-  border: none !important;
-  border-radius: 8px !important;
-  padding: 12px 32px !important;
-  font-weight: 500 !important;
-  transition: all 0.3s ease !important;
+.btn {
+  padding: 0.75rem 1.5rem;
+  border-radius: 8px;
+  font-weight: 500;
+  cursor: pointer;
+  transition: all 0.2s;
+  border: none;
+  font-size: 0.875rem;
 }
 
-.close-button:hover {
-  background: #475569 !important;
-  transform: translateY(-2px);
+.btn-secondary {
+  background: #e2e8f0;
+  color: #4a5568;
+}
+
+.btn-secondary:hover {
+  background: #cbd5e0;
 }

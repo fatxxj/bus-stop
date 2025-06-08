@@ -29,9 +29,7 @@ import { StopDetailsComponent } from '../stop-details/stop-details.component';
     MatFormFieldModule,
     MatInputModule,
     MatPaginatorModule,
-    MatSortModule,
-    StopFormComponent,
-    StopDetailsComponent
+    MatSortModule
   ]
 })
 export class StopListComponent implements OnInit {

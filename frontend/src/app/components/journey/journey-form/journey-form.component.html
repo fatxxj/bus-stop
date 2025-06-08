@@ -1,48 +1,86 @@
-<h2 mat-dialog-title>{{isEditMode ? 'Edit' : 'Create'}} Journey</h2>
+<div class="modern-dialog">
+  <div class="dialog-header">
+    <h2 class="dialog-title">
+      <svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+        <path d="M12 5V19M5 12H19" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+      </svg>
+      {{isEditMode ? 'Edit' : 'Create'}} Journey
+    </h2>
+  </div>
 
-<form [formGroup]="journeyForm" (ngSubmit)="onSubmit()">
-  <mat-dialog-content>
-    <div class="form-container">
-      <mat-form-field appearance="outline" class="full-width">
-        <mat-label>Code</mat-label>
-        <input matInput formControlName="code" placeholder="Enter journey code">
-        <mat-error *ngIf="journeyForm.get('code')?.hasError('required')">Code is required</mat-error>
-        <mat-error *ngIf="journeyForm.get('code')?.hasError('pattern')">Code must contain only letters and numbers</mat-error>
-      </mat-form-field>
+  <form [formGroup]="journeyForm" (ngSubmit)="onSubmit()">
+    <div class="dialog-content">
+      <div class="form-grid">
+        <mat-form-field appearance="outline" class="modern-field">
+          <mat-label>Journey Code</mat-label>
+          <input matInput formControlName="code" placeholder="Enter journey code">
+          <mat-icon matPrefix>tag</mat-icon>
+          <mat-error *ngIf="journeyForm.get('code')?.hasError('required')">Code is required</mat-error>
+          <mat-error *ngIf="journeyForm.get('code')?.hasError('pattern')">Code must contain only letters and numbers</mat-error>
+        </mat-form-field>
 
-      <mat-form-field appearance="outline" class="full-width">
-        <mat-label>Description</mat-label>
-        <textarea matInput formControlName="description" placeholder="Enter journey description"></textarea>
-        <mat-error *ngIf="journeyForm.get('description')?.hasError('required')">Description is required</mat-error>
-      </mat-form-field>
-
-      <div class="stops-section">
-        <h3>Available Stops</h3>
-        <mat-selection-list #stopsList>
-          <mat-list-option *ngFor="let stop of stops" [value]="stop" (click)="addStop(stop)">
-            {{stop.code}} - {{stop.description}}
-          </mat-list-option>
-        </mat-selection-list>
+        <mat-form-field appearance="outline" class="modern-field full-width">
+          <mat-label>Description</mat-label>
+          <textarea matInput formControlName="description" placeholder="Enter journey description" rows="3"></textarea>
+          <mat-icon matPrefix>description</mat-icon>
+          <mat-error *ngIf="journeyForm.get('description')?.hasError('required')">Description is required</mat-error>
+        </mat-form-field>
       </div>
 
-      <div class="selected-stops-section">
-        <h3>Selected Stops (Drag to reorder)</h3>
-        <div cdkDropList class="selected-stops-list" (cdkDropListDropped)="drop($event)">
-          <div class="selected-stop-item" *ngFor="let stop of selectedStops" cdkDrag>
-            <span cdkDragHandle>{{stop.code}} - {{stop.description}}</span>
-            <button mat-icon-button color="warn" (click)="removeStop(stop)">
-              <mat-icon>remove_circle</mat-icon>
-            </button>
+      <div class="stops-management">
+        <div class="stops-section">
+          <h3 class="section-title">
+            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+              <circle cx="12" cy="12" r="10" stroke="currentColor" stroke-width="2"/>
+            </svg>
+            Available Stops
+          </h3>
+          <div class="available-stops">
+            <div class="stop-item selectable" *ngFor="let stop of stops" (click)="addStop(stop)"
+                 [class.disabled]="isStopSelected(stop)">
+              <div class="stop-info">
+                <div class="stop-name">{{stop.code}} - {{stop.description}}</div>
+                <div class="stop-coordinates">{{stop.x}}, {{stop.y}}</div>
+              </div>
+              <div class="add-icon" *ngIf="!isStopSelected(stop)">
+                <svg width="16" height="16" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                  <path d="M12 5V19M5 12H19" stroke="currentColor" stroke-width="2"/>
+                </svg>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <div class="selected-stops-section" *ngIf="selectedStops.length > 0">
+          <h3 class="section-title">
+            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+              <path d="M9 12L11 14L15 10M21 12C21 16.9706 16.9706 21 12 21C7.02944 21 3 16.9706 3 12C3 7.02944 7.02944 3 12 3C16.9706 3 21 7.02944 21 12Z" stroke="currentColor" stroke-width="2"/>
+            </svg>
+            Selected Route ({{selectedStops.length}} stops)
+          </h3>
+          <div cdkDropList class="selected-stops-list" (cdkDropListDropped)="drop($event)">
+            <div class="stop-item selected" *ngFor="let stop of selectedStops; let i = index" cdkDrag>
+              <div class="stop-number">{{i + 1}}</div>
+              <div class="stop-info">
+                <div class="stop-name">{{stop.code}} - {{stop.description}}</div>
+                <div class="stop-coordinates">{{stop.x}}, {{stop.y}}</div>
+              </div>
+              <button type="button" class="remove-btn" (click)="removeStop(stop)">
+                <svg width="16" height="16" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                  <path d="M18 6L6 18M6 6L18 18" stroke="currentColor" stroke-width="2"/>
+                </svg>
+              </button>
+            </div>
           </div>
         </div>
       </div>
     </div>
-  </mat-dialog-content>
 
-  <mat-dialog-actions align="end">
-    <button mat-button type="button" (click)="onCancel()">Cancel</button>
-    <button mat-raised-button color="primary" type="submit" [disabled]="!journeyForm.valid || selectedStops.length === 0">
-      {{isEditMode ? 'Update' : 'Create'}}
-    </button>
-  </mat-dialog-actions>
-</form> 
+    <div class="dialog-actions">
+      <button type="button" class="btn btn-secondary" (click)="onCancel()">Cancel</button>
+      <button type="submit" class="btn btn-primary" [disabled]="!journeyForm.valid || selectedStops.length === 0">
+        {{isEditMode ? 'Update' : 'Create'}} Journey
+      </button>
+    </div>
+  </form>
+</div>
