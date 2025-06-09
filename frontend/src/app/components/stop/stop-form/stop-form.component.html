@@ -1,76 +1,204 @@
 
 <div class="modern-dialog">
   <div class="dialog-header">
-    <h2 class="dialog-title">
-      <svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
-        <path d="M12 5V19M5 12H19" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
-      </svg>
-      {{isEditMode ? 'Edit' : 'Create'}} Stop
-    </h2>
+    <div class="header-content">
+      <div class="header-icon">
+        <svg width="32" height="32" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+          <circle cx="12" cy="12" r="10" stroke="currentColor" stroke-width="2"/>
+          <circle cx="12" cy="12" r="3" fill="currentColor"/>
+        </svg>
+      </div>
+      <div class="header-text">
+        <h2 class="dialog-title">{{isEditMode ? 'Edit Stop' : 'Create New Stop'}}</h2>
+        <p class="dialog-subtitle">{{isEditMode ? 'Update stop information and location details' : 'Define a new bus stop with precise location coordinates'}}</p>
+      </div>
+    </div>
+    <div class="progress-indicator">
+      <div class="step" [class.active]="true">
+        <div class="step-number">1</div>
+        <span>Basic Info</span>
+      </div>
+      <div class="step-divider"></div>
+      <div class="step" [class.active]="stopForm.get('x')?.value && stopForm.get('y')?.value">
+        <div class="step-number">2</div>
+        <span>Location</span>
+      </div>
+    </div>
   </div>
 
   <form [formGroup]="stopForm" (ngSubmit)="onSubmit()">
     <div class="dialog-content">
-      <div class="form-grid">
-        <mat-form-field appearance="outline" class="modern-field">
-          <mat-label>Stop Code</mat-label>
-          <input matInput formControlName="code" placeholder="Enter stop code">
-          <mat-icon matPrefix>tag</mat-icon>
-          <mat-error *ngIf="stopForm.get('code')?.hasError('required')">Code is required</mat-error>
-          <mat-error *ngIf="stopForm.get('code')?.hasError('pattern')">Code must contain only letters and numbers</mat-error>
-        </mat-form-field>
+      <!-- Basic Information Section -->
+      <div class="form-section">
+        <div class="section-header">
+          <div class="section-icon">
+            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+              <path d="M9 12L11 14L15 10M21 12C21 16.9706 16.9706 21 12 21C7.02944 21 3 16.9706 3 12C3 7.02944 7.02944 3 12 3C16.9706 3 21 7.02944 21 12Z" stroke="currentColor" stroke-width="2"/>
+            </svg>
+          </div>
+          <h3>Stop Information</h3>
+        </div>
+        
+        <div class="form-grid">
+          <mat-form-field appearance="outline" class="modern-field">
+            <mat-label>Stop Code</mat-label>
+            <input matInput formControlName="code" placeholder="e.g. ST001, MAIN_ST">
+            <mat-icon matPrefix>confirmation_number</mat-icon>
+            <mat-hint>Unique identifier for this stop</mat-hint>
+            <mat-error *ngIf="stopForm.get('code')?.hasError('required')">Stop code is required</mat-error>
+            <mat-error *ngIf="stopForm.get('code')?.hasError('pattern')">Code must contain only letters and numbers</mat-error>
+          </mat-form-field>
 
-        <mat-form-field appearance="outline" class="modern-field full-width">
-          <mat-label>Description</mat-label>
-          <textarea matInput formControlName="description" placeholder="Enter stop description" rows="3"></textarea>
-          <mat-icon matPrefix>description</mat-icon>
-          <mat-error *ngIf="stopForm.get('description')?.hasError('required')">Description is required</mat-error>
-        </mat-form-field>
-
-        <mat-form-field appearance="outline" class="modern-field">
-          <mat-label>X Coordinate</mat-label>
-          <input matInput formControlName="x" placeholder="Enter X coordinate" type="number">
-          <mat-icon matPrefix>location_on</mat-icon>
-          <mat-error *ngIf="stopForm.get('x')?.hasError('required')">X coordinate is required</mat-error>
-          <mat-error *ngIf="stopForm.get('x')?.hasError('pattern')">Please enter a valid coordinate</mat-error>
-        </mat-form-field>
-
-        <mat-form-field appearance="outline" class="modern-field">
-          <mat-label>Y Coordinate</mat-label>
-          <input matInput formControlName="y" placeholder="Enter Y coordinate" type="number">
-          <mat-icon matPrefix>location_on</mat-icon>
-          <mat-error *ngIf="stopForm.get('y')?.hasError('required')">Y coordinate is required</mat-error>
-          <mat-error *ngIf="stopForm.get('y')?.hasError('pattern')">Please enter a valid coordinate</mat-error>
-        </mat-form-field>
+          <mat-form-field appearance="outline" class="modern-field full-width">
+            <mat-label>Stop Description</mat-label>
+            <textarea matInput formControlName="description" placeholder="Describe the stop location, nearby landmarks, or special facilities" rows="3"></textarea>
+            <mat-icon matPrefix>description</mat-icon>
+            <mat-hint>Detailed description of the stop and its surroundings</mat-hint>
+            <mat-error *ngIf="stopForm.get('description')?.hasError('required')">Description is required</mat-error>
+          </mat-form-field>
+        </div>
       </div>
 
-      <div class="location-preview" *ngIf="stopForm.get('x')?.value && stopForm.get('y')?.value">
-        <div class="preview-header">
-          <h3>
+      <!-- Location Section -->
+      <div class="form-section">
+        <div class="section-header">
+          <div class="section-icon">
             <svg width="20" height="20" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
               <path d="M21 10C21 17L12 23L3 10C3 6.13401 7.13401 2 11 2H13C16.866 2 21 6.13401 21 10Z" stroke="currentColor" stroke-width="2"/>
               <circle cx="12" cy="10" r="3" stroke="currentColor" stroke-width="2"/>
             </svg>
-            Location Preview
-          </h3>
-        </div>
-        <div class="coordinates-display">
-          <div class="coordinate-item">
-            <span class="label">X:</span>
-            <span class="value">{{stopForm.get('x')?.value}}</span>
           </div>
-          <div class="coordinate-item">
-            <span class="label">Y:</span>
-            <span class="value">{{stopForm.get('y')?.value}}</span>
+          <h3>Location Coordinates</h3>
+          <div class="coordinate-status" *ngIf="stopForm.get('x')?.value && stopForm.get('y')?.value">
+            <span class="status-badge">Location Set</span>
+          </div>
+        </div>
+
+        <div class="location-grid">
+          <div class="coordinate-inputs">
+            <mat-form-field appearance="outline" class="modern-field coordinate-field">
+              <mat-label>X Coordinate</mat-label>
+              <input matInput formControlName="x" placeholder="0.000" type="number" step="0.001">
+              <mat-icon matPrefix>my_location</mat-icon>
+              <mat-hint>Longitude or horizontal position</mat-hint>
+              <mat-error *ngIf="stopForm.get('x')?.hasError('required')">X coordinate is required</mat-error>
+              <mat-error *ngIf="stopForm.get('x')?.hasError('pattern')">Please enter a valid coordinate</mat-error>
+            </mat-form-field>
+
+            <mat-form-field appearance="outline" class="modern-field coordinate-field">
+              <mat-label>Y Coordinate</mat-label>
+              <input matInput formControlName="y" placeholder="0.000" type="number" step="0.001">
+              <mat-icon matPrefix>my_location</mat-icon>
+              <mat-hint>Latitude or vertical position</mat-hint>
+              <mat-error *ngIf="stopForm.get('y')?.hasError('required')">Y coordinate is required</mat-error>
+              <mat-error *ngIf="stopForm.get('y')?.hasError('pattern')">Please enter a valid coordinate</mat-error>
+            </mat-form-field>
+          </div>
+
+          <div class="location-preview" *ngIf="stopForm.get('x')?.value && stopForm.get('y')?.value">
+            <div class="preview-card">
+              <div class="preview-header">
+                <div class="preview-icon">
+                  <svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                    <path d="M21 10C21 17L12 23L3 10C3 6.13401 7.13401 2 11 2H13C16.866 2 21 6.13401 21 10Z" stroke="currentColor" stroke-width="2"/>
+                    <circle cx="12" cy="10" r="3" stroke="currentColor" stroke-width="2"/>
+                  </svg>
+                </div>
+                <h4>Location Preview</h4>
+              </div>
+              
+              <div class="coordinates-display">
+                <div class="coordinate-item x-coordinate">
+                  <div class="coordinate-icon">
+                    <svg width="16" height="16" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                      <path d="M5 12H19M12 5V19" stroke="currentColor" stroke-width="2"/>
+                    </svg>
+                  </div>
+                  <div class="coordinate-content">
+                    <span class="label">X Coordinate</span>
+                    <span class="value">{{stopForm.get('x')?.value}}</span>
+                    <span class="unit">Longitude</span>
+                  </div>
+                </div>
+                
+                <div class="coordinate-item y-coordinate">
+                  <div class="coordinate-icon">
+                    <svg width="16" height="16" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                      <path d="M5 12H19M12 5V19" stroke="currentColor" stroke-width="2"/>
+                    </svg>
+                  </div>
+                  <div class="coordinate-content">
+                    <span class="label">Y Coordinate</span>
+                    <span class="value">{{stopForm.get('y')?.value}}</span>
+                    <span class="unit">Latitude</span>
+                  </div>
+                </div>
+              </div>
+
+              <div class="location-info">
+                <div class="info-item">
+                  <svg width="16" height="16" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                    <circle cx="12" cy="12" r="10" stroke="currentColor" stroke-width="2"/>
+                    <path d="M12 6V12L16 14" stroke="currentColor" stroke-width="2"/>
+                  </svg>
+                  <span>Coordinates validated</span>
+                </div>
+                <div class="info-item">
+                  <svg width="16" height="16" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                    <path d="M9 12L11 14L15 10" stroke="currentColor" stroke-width="2"/>
+                  </svg>
+                  <span>Ready for route planning</span>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <div class="location-placeholder" *ngIf="!stopForm.get('x')?.value || !stopForm.get('y')?.value">
+            <div class="placeholder-content">
+              <div class="placeholder-icon">
+                <svg width="48" height="48" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                  <path d="M21 10C21 17L12 23L3 10C3 6.13401 7.13401 2 11 2H13C16.866 2 21 6.13401 21 10Z" stroke="currentColor" stroke-width="1"/>
+                  <circle cx="12" cy="10" r="3" stroke="currentColor" stroke-width="1"/>
+                </svg>
+              </div>
+              <h4>Set Stop Location</h4>
+              <p>Enter X and Y coordinates to preview the stop location</p>
+              <div class="coordinate-tips">
+                <div class="tip">
+                  <svg width="16" height="16" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                    <circle cx="12" cy="12" r="10" stroke="currentColor" stroke-width="2"/>
+                    <path d="M9.09 9C9.3251 8.33167 9.78915 7.76811 10.4 7.40913C11.0108 7.05016 11.7289 6.91894 12.4272 7.03871C13.1255 7.15849 13.7588 7.52152 14.2151 8.06353C14.6713 8.60553 14.9211 9.29152 14.92 10C14.92 12 11.92 13 11.92 13" stroke="currentColor" stroke-width="2"/>
+                    <path d="M12 17H12.01" stroke="currentColor" stroke-width="2"/>
+                  </svg>
+                  X = Horizontal position
+                </div>
+                <div class="tip">
+                  <svg width="16" height="16" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                    <circle cx="12" cy="12" r="10" stroke="currentColor" stroke-width="2"/>
+                    <path d="M9.09 9C9.3251 8.33167 9.78915 7.76811 10.4 7.40913C11.0108 7.05016 11.7289 6.91894 12.4272 7.03871C13.1255 7.15849 13.7588 7.52152 14.2151 8.06353C14.6713 8.60553 14.9211 9.29152 14.92 10C14.92 12 11.92 13 11.92 13" stroke="currentColor" stroke-width="2"/>
+                    <path d="M12 17H12.01" stroke="currentColor" stroke-width="2"/>
+                  </svg>
+                  Y = Vertical position
+                </div>
+              </div>
+            </div>
           </div>
         </div>
       </div>
     </div>
 
     <div class="dialog-actions">
-      <button type="button" class="btn btn-secondary" (click)="onCancel()">Cancel</button>
+      <button type="button" class="btn btn-secondary" (click)="onCancel()">
+        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+          <path d="M18 6L6 18M6 6L18 18" stroke="currentColor" stroke-width="2"/>
+        </svg>
+        Cancel
+      </button>
       <button type="submit" class="btn btn-primary" [disabled]="!stopForm.valid">
-        {{isEditMode ? 'Update' : 'Create'}} Stop
+        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+          <path d="M9 12L11 14L15 10M21 12C21 16.9706 16.9706 21 12 21C7.02944 21 3 16.9706 3 12C3 7.02944 7.02944 3 12 3C16.9706 3 21 7.02944 21 12Z" stroke="currentColor" stroke-width="2"/>
+        </svg>
+        {{isEditMode ? 'Update Stop' : 'Create Stop'}}
       </button>
     </div>
   </form>
