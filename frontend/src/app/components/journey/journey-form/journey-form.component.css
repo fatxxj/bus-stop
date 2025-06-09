@@ -1,7 +1,7 @@
 
 .modern-dialog {
-  max-width: 1200px;
-  width: 100%;
+  max-width: 1600px;
+  width: 98vw;
   max-height: 90vh;
   display: flex;
   flex-direction: column;
@@ -299,9 +299,10 @@
 .stops-management {
   display: grid;
   grid-template-columns: 1fr auto 1fr;
-  gap: 2rem;
+  gap: 3rem;
   align-items: start;
   margin-top: 1rem;
+  min-height: 450px;
 }
 
 .route-arrow {
@@ -432,6 +433,7 @@
 
 .available-stops, .selected-stops-list {
   max-height: 400px;
+  min-height: 350px;
   overflow-y: auto;
   display: flex;
   flex-direction: column;

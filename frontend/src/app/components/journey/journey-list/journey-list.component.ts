@@ -62,7 +62,8 @@ export class JourneyListComponent implements OnInit {
 
   openJourneyForm(journey?: Journey): void {
     const dialogRef = this.dialog.open(JourneyFormComponent, {
-      width: '600px',
+      width: '98vw',  // 90% of viewport width
+      maxWidth: '1600px',  // Optional: set a maximum width
       data: journey
     });
 
@@ -75,7 +76,9 @@ export class JourneyListComponent implements OnInit {
 
   openJourneyDetails(journey: Journey): void {
     this.dialog.open(JourneyDetailsComponent, {
-      width: '600px',
+      // width: '1400px',
+      width: '98vw',  // 90% of viewport width
+      maxWidth: '1600px',  // Optional: set a maximum width
       data: journey
     });
   }
