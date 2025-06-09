@@ -844,3 +844,157 @@
 .stops-grid.cdk-drop-list-dragging .stop-card:not(.cdk-drag-placeholder) {
   transition: transform 250ms cubic-bezier(0, 0, 0.2, 1);
 }
+
+/* Enhanced Label Styling - FIXED */
+::ng-deep .modern-field .mat-mdc-floating-label {
+  color: #64748b;
+  font-weight: 600;
+  font-size: 16px; /* Increased from 15px */
+  letter-spacing: 0.02em;
+  transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+  /* Ensure proper positioning */
+  top: 50%;
+  transform: translateY(-50%);
+  pointer-events: none;
+  /* Prevent text cutoff */
+  white-space: nowrap;
+  overflow: visible;
+  text-overflow: clip;
+}
+
+::ng-deep .modern-field.mat-focused .mat-mdc-floating-label,
+::ng-deep .modern-field .mat-mdc-floating-label.mdc-floating-label--float-above {
+  color: #667eea;
+  font-weight: 700;
+  /* Fixed transform values for proper scaling and positioning */
+  transform: translateY(-2.5rem) scale(0.75); /* Adjusted positioning */
+  transform-origin: left top;
+  /* Ensure label doesn't get cut off */
+  z-index: 2;
+  background: white;
+  padding: 0 4px;
+  margin-left: -4px;
+}
+
+/* Fix for outline appearance - ensure label has proper background */
+::ng-deep .modern-field[appearance="outline"] .mat-mdc-floating-label.mdc-floating-label--float-above {
+  background: white;
+  padding: 0 8px;
+  margin-left: -8px;
+  /* Adjust position to align with outline */
+  transform: translateY(-1.75rem) scale(0.75);
+}
+
+/* Enhanced Input Styling - adjusted padding to accommodate labels */
+::ng-deep .modern-field input,
+::ng-deep .modern-field textarea {
+  color: #1e293b;
+  font-size: 16px;
+  font-weight: 500;
+  line-height: 1.6;
+  padding: 20px 16px 8px 16px; /* Adjusted top padding */
+  background: transparent;
+  transition: all 0.3s ease;
+}
+
+/* Enhanced Modern Field Wrapper */
+::ng-deep .modern-field .mat-mdc-text-field-wrapper {
+  background: linear-gradient(145deg, #ffffff, #f8fafc);
+  border-radius: 16px;
+  transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.02), 0 1px 2px rgba(0, 0, 0, 0.06);
+  position: relative;
+  overflow: visible; /* Changed from hidden to visible */
+  min-height: 56px; /* Ensure consistent height */
+}
+
+/* Enhanced Outline Styling */
+::ng-deep .modern-field .mat-mdc-form-field-outline {
+  color: #e2e8f0;
+  border-radius: 16px;
+  border-width: 2px;
+  transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+  /* Ensure outline doesn't interfere with label */
+  z-index: 1;
+}
+
+::ng-deep .modern-field .mat-mdc-form-field-outline-thick {
+  color: #667eea;
+  border-width: 3px;
+  z-index: 1;
+}
+
+/* Fix for form field container to ensure proper spacing */
+::ng-deep .modern-field .mat-mdc-form-field-infix {
+  padding: 16px 0;
+  border-top: 1em solid transparent;
+  min-height: auto;
+}
+
+/* Enhanced Prefix Icons - adjusted positioning */
+::ng-deep .modern-field .mat-mdc-form-field-icon-prefix {
+  color: #94a3b8;
+  margin-right: 12px;
+  margin-left: 4px;
+  transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+  transform: scale(1);
+  z-index: 2;
+}
+
+::ng-deep .modern-field.mat-focused .mat-mdc-form-field-icon-prefix {
+  color: #667eea;
+  transform: scale(1.1);
+}
+
+/* Special handling for textarea labels */
+::ng-deep .modern-field textarea + .mat-mdc-floating-label {
+  /* Position label for textarea fields */
+  top: 24px;
+  transform: translateY(0);
+}
+
+::ng-deep .modern-field.mat-focused textarea + .mat-mdc-floating-label,
+::ng-deep .modern-field textarea:not(:placeholder-shown) + .mat-mdc-floating-label {
+  transform: translateY(-2.5rem) scale(0.75);
+}
+
+/* Additional fix for Material Design outline notch */
+::ng-deep .modern-field .mat-mdc-notch-piece {
+  border-top: 2px solid;
+  border-color: inherit;
+}
+
+::ng-deep .modern-field .mdc-notched-outline__notch {
+  border-top: none;
+}
+
+/* Ensure labels don't get clipped on focus */
+::ng-deep .modern-field .mat-mdc-form-field-flex {
+  overflow: visible;
+  position: relative;
+}
+
+/* Fix for hint and error positioning */
+::ng-deep .modern-field .mat-mdc-form-field-subscript-wrapper {
+  margin-top: 8px;
+  position: relative;
+}
+
+::ng-deep .modern-field .mat-mdc-form-field-hint {
+  color: #64748b;
+  font-size: 13px;
+  font-weight: 500;
+  letter-spacing: 0.02em;
+  transition: color 0.3s ease;
+}
+
+::ng-deep .modern-field.mat-focused .mat-mdc-form-field-hint {
+  color: #667eea;
+}
+
+::ng-deep .modern-field .mat-mdc-form-field-error {
+  color: #ef4444;
+  font-size: 13px;
+  font-weight: 600;
+  animation: errorSlideIn 0.3s ease-out;
+}
