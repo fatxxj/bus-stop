@@ -28,7 +28,6 @@ import { StopFormComponent } from './components/stop/stop-form/stop-form.compone
 import { StopDetailsComponent } from './components/stop/stop-details/stop-details.component';
 import { LoginComponent } from './components/login/login.component';
 import { UserProfileComponent } from './components/user-profile/user-profile.component';
-import { AuthInterceptor } from './interceptors/auth.interceptor';
 import { AuthGuard } from './guards/auth.guard';
 
 const routes: Routes = [
@@ -67,7 +66,7 @@ const routes: Routes = [
     UserProfileComponent
   ],
   providers: [
-    { provide: HTTP_INTERCEPTORS, useClass: AuthInterceptor, multi: true }
+    // Removed: { provide: HTTP_INTERCEPTORS, useClass: AuthInterceptor, multi: true }
   ],
   bootstrap: [AppComponent]
 })
