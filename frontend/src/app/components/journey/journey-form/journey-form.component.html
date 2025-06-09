@@ -27,22 +27,22 @@
       </div>
 
       <div class="form-row">
-        <mat-form-field appearance="outline" class="form-field">
+        <mat-form-field appearance="outline" class="form-field modern-field">
           <mat-label>Journey Code</mat-label>
-          <input matInput formControlName="code" placeholder="e.g., RT001, BUS123" maxlength="20">
-          <mat-icon matPrefix>confirmation_number</mat-icon>
-          <mat-hint>Unique identifier for this journey</mat-hint>
+          <input matInput formControlName="code" placeholder="e.g., RT001, BUS123, CITY01" maxlength="20">
+          <mat-icon matPrefix></mat-icon>
+          <mat-hint>Unique alphanumeric identifier for this route</mat-hint>
           <mat-error *ngIf="journeyForm.get('code')?.hasError('required')">Journey code is required</mat-error>
           <mat-error *ngIf="journeyForm.get('code')?.hasError('pattern')">Code must contain only letters and numbers</mat-error>
         </mat-form-field>
 
-        <mat-form-field appearance="outline" class="form-field form-field-wide">
+        <mat-form-field appearance="outline" class="form-field modern-field form-field-wide">
           <mat-label>Route Description</mat-label>
           <textarea matInput formControlName="description" 
-                   placeholder="Describe the route purpose, areas covered, or special notes" 
-                   rows="3" maxlength="500"></textarea>
-          <mat-icon matPrefix>description</mat-icon>
-          <mat-hint>{{journeyForm.get('description')?.value?.length || 0}}/500 characters</mat-hint>
+                   placeholder="Describe the route's purpose, key destinations, operating hours, and any special notes for passengers or drivers..." 
+                   rows="4" maxlength="500"></textarea>
+          <mat-icon matPrefix></mat-icon>
+          <mat-hint>{{journeyForm.get('description')?.value?.length || 0}} of 500 characters used</mat-hint>
           <mat-error *ngIf="journeyForm.get('description')?.hasError('required')">Description is required</mat-error>
         </mat-form-field>
       </div>
@@ -75,11 +75,12 @@
         </div>
 
         <div class="search-container">
-          <mat-form-field appearance="outline" class="search-field">
-            <mat-label>Search stops</mat-label>
+          <mat-form-field appearance="outline" class="search-field modern-field">
+            <mat-label>Find Stops</mat-label>
             <input matInput [(ngModel)]="searchTerm" [ngModelOptions]="{standalone: true}" 
-                   placeholder="Search by code or description">
-            <mat-icon matPrefix>search</mat-icon>
+                   placeholder="Search by stop code, name, or location...">
+            <mat-icon matPrefix></mat-icon>
+            <mat-hint>Find stops by typing any part of their code or description</mat-hint>
           </mat-form-field>
         </div>
 
