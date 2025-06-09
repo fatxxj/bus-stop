@@ -136,8 +136,8 @@
   flex: 1;
   overflow-y: auto;
   background: #ffffff;
-  max-height: 60vh;
   scroll-behavior: smooth;
+  max-height: calc(90vh - 200px);
 }
 
 .form-section {
@@ -470,9 +470,10 @@
   display: flex;
   justify-content: flex-end;
   gap: 1rem;
-  padding: 2rem 2.5rem;
+  padding: 1.5rem 2.5rem;
   background: #fafafa;
   border-top: 1px solid #f1f5f9;
+  flex-shrink: 0;
 }
 
 .btn {
@@ -557,6 +558,10 @@
   .location-grid {
     grid-template-columns: 1fr;
     gap: 1.5rem;
+  }
+  
+  .dialog-content {
+    max-height: calc(95vh - 200px);
   }
   
   .dialog-actions {
@@ -972,4 +977,11 @@
   .dialog-content {
     max-height: 50vh;
   }
+}
+
+form {
+  display: flex;
+  flex-direction: column;
+  height: 100%;
+  overflow: hidden;
 }
