@@ -1,5 +1,5 @@
 import { Component, Inject, OnInit } from '@angular/core';
-import { FormBuilder, FormGroup, Validators, ReactiveFormsModule } from '@angular/forms';
+import { FormBuilder, FormGroup, Validators, ReactiveFormsModule, FormsModule } from '@angular/forms';
 import { MatDialogRef, MAT_DIALOG_DATA, MatDialogModule } from '@angular/material/dialog';
 import { Journey, JourneyCreate, JourneyStop } from '../../../models/journey.model';
 import { Stop } from '../../../models/stop.model';
@@ -21,6 +21,7 @@ import { MatIconModule } from '@angular/material/icon';
   imports: [
     CommonModule,
     ReactiveFormsModule,
+    FormsModule,
     MatDialogModule,
     MatButtonModule,
     MatFormFieldModule,
@@ -79,7 +80,8 @@ export class JourneyFormComponent implements OnInit {
   }
 
   onSubmit(): void {
-    if (this.journeyForm.valid && this.selectedStops.length > 0) {
+    if (this.journeyForm.valid && this.selectedStops.length >= 2) {
+      this.isFormSubmitting = true;
       if (this.isEditMode) {
         this.journeyStops = this.selectedStops.map((stop, index) => {
           const existingStop = this.journeyStops.find(js => js.stopId === stop.id);
@@ -109,6 +111,7 @@ export class JourneyFormComponent implements OnInit {
           },
           error: (error) => {
             console.error('Error updating journey:', error);
+            this.isFormSubmitting = false;
           }
         });
       } else {
@@ -118,6 +121,7 @@ export class JourneyFormComponent implements OnInit {
           },
           error: (error) => {
             console.error('Error creating journey:', error);
+            this.isFormSubmitting = false;
           }
         });
       }
@@ -165,5 +169,53 @@ export class JourneyFormComponent implements OnInit {
 
   isStopSelected(stop: Stop): boolean {
     return this.selectedStops.some(s => s.id === stop.id);
+  }
+
+  searchTerm: string = '';
+  isFormSubmitting: boolean = false;
+
+  getAvailableStops(): Stop[] {
+    return this.stops.filter(stop => !this.isStopSelected(stop));
+  }
+
+  getFilteredAvailableStops(): Stop[] {
+    const available = this.getAvailableStops();
+    if (!this.searchTerm) return available;
+    
+    const term = this.searchTerm.toLowerCase();
+    return available.filter(stop => 
+      stop.code.toLowerCase().includes(term) || 
+      stop.description.toLowerCase().includes(term)
+    );
+  }
+
+  calculateRouteDistance(): string {
+    if (this.selectedStops.length < 2) return '0';
+    
+    let totalDistance = 0;
+    for (let i = 0; i < this.selectedStops.length - 1; i++) {
+      const stop1 = this.selectedStops[i];
+      const stop2 = this.selectedStops[i + 1];
+      const distance = Math.sqrt(
+        Math.pow(stop2.x - stop1.x, 2) + Math.pow(stop2.y - stop1.y, 2)
+      );
+      totalDistance += distance;
+    }
+    
+    return (totalDistance / 100).toFixed(1); // Convert to km
+  }
+
+  clearAllStops(): void {
+    this.selectedStops = [];
+    this.journeyStops = [];
+  }
+
+  reverseRoute(): void {
+    this.selectedStops.reverse();
+    this.journeyStops = this.selectedStops.map((stop, index) => ({
+      stopId: stop.id,
+      order: index + 1,
+      passingTime: '00:00:00'
+    }));
   }
 } 
