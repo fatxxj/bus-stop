@@ -109,10 +109,8 @@ public class JourneyService : IJourneyService
 
         journey.Description = updateJourneyDto.Description;
 
-        // Remove existing stops
         _context.JourneyStops.RemoveRange(journey.JourneyStops);
 
-        // Add new stops
         journey.JourneyStops = updateJourneyDto.Stops
             .Select(s => new JourneyStop
             {
@@ -141,7 +139,6 @@ public class JourneyService : IJourneyService
     {
         if (!stops.Any()) return false;
 
-        // Check if all stops exist
         var stopIds = stops.Select(s => s.StopId).ToList();
         var existingStops = await _context.Stops
             .Where(s => stopIds.Contains(s.Id))
@@ -150,7 +147,6 @@ public class JourneyService : IJourneyService
 
         if (existingStops.Count != stopIds.Count) return false;
 
-        // Check if orders are sequential and unique
         var orders = stops.Select(s => s.Order).ToList();
         if (orders.Distinct().Count() != orders.Count) return false;
 
@@ -158,7 +154,6 @@ public class JourneyService : IJourneyService
         var maxOrder = orders.Max();
         if (maxOrder - minOrder + 1 != orders.Count) return false;
 
-        // Check if passing times are in order
         var orderedStops = stops.OrderBy(s => s.Order).ToList();
         for (int i = 1; i < orderedStops.Count; i++)
         {

@@ -30,7 +30,6 @@ public class ApplicationDbContext : DbContext
             .HasForeignKey(js => js.StopId)
             .OnDelete(DeleteBehavior.Restrict);
 
-        // Add unique constraints
         modelBuilder.Entity<Journey>()
             .HasIndex(j => j.Code)
             .IsUnique();
