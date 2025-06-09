@@ -62,7 +62,9 @@ export class StopListComponent implements OnInit {
 
   openStopForm(stop?: Stop): void {
     const dialogRef = this.dialog.open(StopFormComponent, {
-      width: '500px',
+      // width: '500px',
+      width: '50vw',  // 90% of viewport width
+      maxWidth: '1600px',  // Optional: set a maximum width
       data: stop
     });
 
@@ -75,7 +77,9 @@ export class StopListComponent implements OnInit {
 
   openStopDetails(stop: Stop): void {
     this.dialog.open(StopDetailsComponent, {
-      width: '500px',
+      // width: '500px',
+      width: '50vw',  // 90% of viewport width
+      maxWidth: '1600px',  // Optional: set a maximum width
       data: stop
     });
   }
