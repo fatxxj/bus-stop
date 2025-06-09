@@ -1,0 +1,84 @@
+<div class="login-container">
+  <div class="login-box">
+    <h2>Register</h2>
+    <form (ngSubmit)="onSubmit()" #registerForm="ngForm">
+      <div class="form-group">
+        <label for="firstName">First Name</label>
+        <input
+          type="text"
+          id="firstName"
+          name="firstName"
+          [(ngModel)]="firstName"
+          required
+          #firstNameInput="ngModel"
+          [class.is-invalid]="firstNameInput.invalid && firstNameInput.touched"
+        >
+        <div class="error-message" *ngIf="firstNameInput.invalid && firstNameInput.touched">
+          First name is required
+        </div>
+      </div>
+
+      <div class="form-group">
+        <label for="lastName">Last Name</label>
+        <input
+          type="text"
+          id="lastName"
+          name="lastName"
+          [(ngModel)]="lastName"
+          required
+          #lastNameInput="ngModel"
+          [class.is-invalid]="lastNameInput.invalid && lastNameInput.touched"
+        >
+        <div class="error-message" *ngIf="lastNameInput.invalid && lastNameInput.touched">
+          Last name is required
+        </div>
+      </div>
+
+      <div class="form-group">
+        <label for="email">Email</label>
+        <input
+          type="email"
+          id="email"
+          name="email"
+          [(ngModel)]="email"
+          required
+          email
+          #emailInput="ngModel"
+          [class.is-invalid]="emailInput.invalid && emailInput.touched"
+        >
+        <div class="error-message" *ngIf="emailInput.invalid && emailInput.touched">
+          Please enter a valid email address
+        </div>
+      </div>
+
+      <div class="form-group">
+        <label for="password">Password</label>
+        <input
+          type="password"
+          id="password"
+          name="password"
+          [(ngModel)]="password"
+          required
+          minlength="6"
+          #passwordInput="ngModel"
+          [class.is-invalid]="passwordInput.invalid && passwordInput.touched"
+        >
+        <div class="error-message" *ngIf="passwordInput.invalid && passwordInput.touched">
+          Password must be at least 6 characters
+        </div>
+      </div>
+
+      <div class="error-message" *ngIf="errorMessage">
+        {{ errorMessage }}
+      </div>
+
+      <button type="submit" [disabled]="registerForm.invalid || isLoading">
+        {{ isLoading ? 'Registering...' : 'Register' }}
+      </button>
+
+      <div class="form-footer">
+        <p>Already have an account? <a (click)="goToLogin()">Login</a></p>
+      </div>
+    </form>
+  </div>
+</div> 

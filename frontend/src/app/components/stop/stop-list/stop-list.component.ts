@@ -13,6 +13,7 @@ import { MatSortModule } from '@angular/material/sort';
 import { CommonModule } from '@angular/common';
 import { StopFormComponent } from '../stop-form/stop-form.component';
 import { StopDetailsComponent } from '../stop-details/stop-details.component';
+import { AuthService } from '../../../services/auth.service';
 
 @Component({
   selector: 'app-stop-list',
@@ -36,11 +37,17 @@ export class StopListComponent implements OnInit {
   displayedColumns: string[] = ['code', 'description', 'coordinates', 'actions'];
   dataSource = new MatTableDataSource<Stop>();
   loading = false;
+  isAuthenticated = false;
 
   constructor(
     private stopService: StopService,
-    private dialog: MatDialog
-  ) { }
+    private dialog: MatDialog,
+    private authService: AuthService
+  ) {
+    this.authService.currentUser$.subscribe(user => {
+      this.isAuthenticated = !!user;
+    });
+  }
 
   ngOnInit(): void {
     this.loadStops();

@@ -13,6 +13,7 @@ import { MatSortModule } from '@angular/material/sort';
 import { CommonModule } from '@angular/common';
 import { JourneyFormComponent } from '../journey-form/journey-form.component';
 import { JourneyDetailsComponent } from '../journey-details/journey-details.component';
+import { AuthService } from '../../../services/auth.service';
 
 @Component({
   selector: 'app-journey-list',
@@ -36,11 +37,17 @@ export class JourneyListComponent implements OnInit {
   displayedColumns: string[] = ['code', 'description', 'stops', 'actions'];
   dataSource = new MatTableDataSource<Journey>();
   loading = false;
+  isAuthenticated = false;
 
   constructor(
     private journeyService: JourneyService,
-    private dialog: MatDialog
-  ) { }
+    private dialog: MatDialog,
+    private authService: AuthService
+  ) {
+    this.authService.currentUser$.subscribe(user => {
+      this.isAuthenticated = !!user;
+    });
+  }
 
   ngOnInit(): void {
     this.loadJourneys();

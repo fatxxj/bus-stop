@@ -1,4 +1,3 @@
-
 <div class="app-wrapper">
   <!-- Header Section -->
   <header class="main-header">
@@ -27,6 +26,25 @@
             <span class="status-dot online"></span>
             <span class="status-text">System Online</span>
           </div>
+
+          <!-- User Menu -->
+          <div class="user-menu" *ngIf="currentUser">
+            <button class="user-menu-button" (click)="toggleUserMenu()">
+              <span class="user-name">{{currentUser.firstName}} {{currentUser.lastName}}</span>
+              <svg width="20" height="20" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                <path d="M19 9L12 16L5 9" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+              </svg>
+            </button>
+            <div class="user-dropdown" *ngIf="showUserMenu">
+              <button (click)="openProfile()">Edit Profile</button>
+              <button (click)="logout()">Logout</button>
+            </div>
+          </div>
+
+          <!-- Login Button -->
+          <button class="login-button" *ngIf="!currentUser" (click)="openLogin()">
+            Login
+          </button>
         </div>
       </div>
     </div>
@@ -44,7 +62,7 @@
             <path d="M9 17H7V10L12 5L17 10V17H15" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
             <path d="M13 17V13H11V17" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
           </svg>
-          <span>Journey Management</span>
+          <span>Journeys</span>
         </button>
         <button 
           class="nav-tab"
@@ -52,9 +70,9 @@
           (click)="switchTab('stops')">
           <svg width="20" height="20" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
             <circle cx="12" cy="12" r="10" stroke="currentColor" stroke-width="2"/>
-            <path d="12 2L12 12L22 12" stroke="currentColor" stroke-width="2" stroke-linecap="round"/>
+            <path d="M12 2L12 12L22 12" stroke="currentColor" stroke-width="2" stroke-linecap="round"/>
           </svg>
-          <span>Stop Management</span>
+          <span>Stops</span>
         </button>
       </div>
     </div>
@@ -106,4 +124,25 @@
       </div>
     </div>
   </footer>
+
+  <!-- Profile Modal -->
+  <div class="modal-overlay" *ngIf="showProfileModal" (click)="closeProfile()">
+    <div class="modal-content" (click)="$event.stopPropagation()">
+      <app-user-profile></app-user-profile>
+    </div>
+  </div>
+
+  <!-- Login Modal -->
+  <div class="modal-overlay" *ngIf="showLoginModal" (click)="closeLogin()">
+    <div class="modal-content" (click)="$event.stopPropagation()">
+      <app-login></app-login>
+    </div>
+  </div>
+
+  <!-- Register Modal -->
+  <div class="modal-overlay" *ngIf="showRegisterModal" (click)="closeRegister()">
+    <div class="modal-content" (click)="$event.stopPropagation()">
+      <app-register></app-register>
+    </div>
+  </div>
 </div>

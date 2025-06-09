@@ -1,7 +1,8 @@
 import { NgModule } from '@angular/core';
 import { BrowserModule } from '@angular/platform-browser';
-import { HttpClientModule } from '@angular/common/http';
-import { ReactiveFormsModule } from '@angular/forms';
+import { HttpClientModule, HTTP_INTERCEPTORS } from '@angular/common/http';
+import { RouterModule, Routes } from '@angular/router';
+import { FormsModule } from '@angular/forms';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 
 // Material Modules
@@ -25,12 +26,24 @@ import { JourneyDetailsComponent } from './components/journey/journey-details/jo
 import { StopListComponent } from './components/stop/stop-list/stop-list.component';
 import { StopFormComponent } from './components/stop/stop-form/stop-form.component';
 import { StopDetailsComponent } from './components/stop/stop-details/stop-details.component';
+import { LoginComponent } from './components/login/login.component';
+import { UserProfileComponent } from './components/user-profile/user-profile.component';
+import { AuthInterceptor } from './interceptors/auth.interceptor';
+import { AuthGuard } from './guards/auth.guard';
+
+const routes: Routes = [
+  { path: '', component: AppComponent },
+  { path: 'login', component: LoginComponent },
+  { path: 'profile', component: UserProfileComponent, canActivate: [AuthGuard] }
+];
 
 @NgModule({
+  declarations: [],
   imports: [
     BrowserModule,
     HttpClientModule,
-    ReactiveFormsModule,
+    FormsModule,
+    RouterModule.forRoot(routes),
     BrowserAnimationsModule,
     MatTableModule,
     MatPaginatorModule,
@@ -49,9 +62,13 @@ import { StopDetailsComponent } from './components/stop/stop-details/stop-detail
     JourneyDetailsComponent,
     StopListComponent,
     StopFormComponent,
-    StopDetailsComponent
+    StopDetailsComponent,
+    LoginComponent,
+    UserProfileComponent
   ],
-  providers: [],
+  providers: [
+    { provide: HTTP_INTERCEPTORS, useClass: AuthInterceptor, multi: true }
+  ],
   bootstrap: [AppComponent]
 })
 export class AppModule { } 

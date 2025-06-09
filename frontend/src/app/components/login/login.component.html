@@ -1,0 +1,56 @@
+<div class="login-container">
+  <div class="login-box">
+    <h2>Login</h2>
+    <form (ngSubmit)="onSubmit()" #loginForm="ngForm">
+      <div class="form-group">
+        <label for="email">Email</label>
+        <input
+          type="email"
+          id="email"
+          name="email"
+          [(ngModel)]="email"
+          required
+          email
+          #emailInput="ngModel"
+          [class.is-invalid]="emailInput.invalid && emailInput.touched"
+        >
+        <div class="error-message" *ngIf="emailInput.invalid && emailInput.touched">
+          Please enter a valid email address
+        </div>
+      </div>
+
+      <div class="form-group">
+        <label for="password">Password</label>
+        <input
+          type="password"
+          id="password"
+          name="password"
+          [(ngModel)]="password"
+          required
+          minlength="6"
+          #passwordInput="ngModel"
+          [class.is-invalid]="passwordInput.invalid && passwordInput.touched"
+        >
+        <div class="error-message" *ngIf="passwordInput.invalid && passwordInput.touched">
+          Password must be at least 6 characters
+        </div>
+      </div>
+
+      <div class="error-message" *ngIf="errorMessage">
+        {{ errorMessage }}
+      </div>
+
+      <button type="submit" [disabled]="loginForm.invalid || isLoading">
+        {{ isLoading ? 'Logging in...' : 'Login' }}
+      </button>
+
+      <div class="form-footer">
+        <div class="form-links">
+          <a (click)="goToRegister()">Register</a>
+          <span class="divider">|</span>
+          <a (click)="forgotPassword()">Forgot Password?</a>
+        </div>
+      </div>
+    </form>
+  </div>
+</div> 
