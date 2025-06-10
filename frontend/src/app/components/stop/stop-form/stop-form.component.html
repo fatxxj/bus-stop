@@ -1,4 +1,3 @@
-
 <div class="modern-dialog">
   <div class="dialog-header">
     <div class="header-content">
@@ -40,19 +39,19 @@
         </div>
         
         <div class="form-grid">
-          <mat-form-field appearance="outline" class="modern-field">
+          <mat-form-field appearance="outline" class="modern-field" floatLabel="always">
             <mat-label>Stop Code</mat-label>
-            <input matInput formControlName="code" placeholder="e.g. ST001, MAIN_ST">
             <mat-icon matPrefix>confirmation_number</mat-icon>
+            <input matInput formControlName="code" placeholder="e.g. ST001, MAIN_ST">
             <mat-hint>Unique identifier for this stop</mat-hint>
             <mat-error *ngIf="stopForm.get('code')?.hasError('required')">Stop code is required</mat-error>
             <mat-error *ngIf="stopForm.get('code')?.hasError('pattern')">Code must contain only letters and numbers</mat-error>
           </mat-form-field>
 
-          <mat-form-field appearance="outline" class="modern-field full-width">
+          <mat-form-field appearance="outline" class="modern-field full-width" floatLabel="always">
             <mat-label>Stop Description</mat-label>
-            <textarea matInput formControlName="description" placeholder="Describe the stop location, nearby landmarks, or special facilities" rows="3"></textarea>
             <mat-icon matPrefix>description</mat-icon>
+            <textarea matInput formControlName="description" placeholder="Describe the stop location, nearby landmarks, or special facilities" rows="3"></textarea>
             <mat-hint>Detailed description of the stop and its surroundings</mat-hint>
             <mat-error *ngIf="stopForm.get('description')?.hasError('required')">Description is required</mat-error>
           </mat-form-field>
@@ -76,19 +75,19 @@
 
         <div class="location-grid">
           <div class="coordinate-inputs">
-            <mat-form-field appearance="outline" class="modern-field coordinate-field">
+            <mat-form-field appearance="outline" class="modern-field coordinate-field" floatLabel="always">
               <mat-label>X Coordinate</mat-label>
-              <input matInput formControlName="x" placeholder="0.000" type="number" step="0.001">
               <mat-icon matPrefix>my_location</mat-icon>
+              <input matInput formControlName="x" placeholder="0.000" type="number" step="0.001">
               <mat-hint>Longitude or horizontal position</mat-hint>
               <mat-error *ngIf="stopForm.get('x')?.hasError('required')">X coordinate is required</mat-error>
               <mat-error *ngIf="stopForm.get('x')?.hasError('pattern')">Please enter a valid coordinate</mat-error>
             </mat-form-field>
 
-            <mat-form-field appearance="outline" class="modern-field coordinate-field">
+            <mat-form-field appearance="outline" class="modern-field coordinate-field" floatLabel="always">
               <mat-label>Y Coordinate</mat-label>
-              <input matInput formControlName="y" placeholder="0.000" type="number" step="0.001">
               <mat-icon matPrefix>my_location</mat-icon>
+              <input matInput formControlName="y" placeholder="0.000" type="number" step="0.001">
               <mat-hint>Latitude or vertical position</mat-hint>
               <mat-error *ngIf="stopForm.get('y')?.hasError('required')">Y coordinate is required</mat-error>
               <mat-error *ngIf="stopForm.get('y')?.hasError('pattern')">Please enter a valid coordinate</mat-error>
