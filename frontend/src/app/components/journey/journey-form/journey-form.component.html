@@ -169,6 +169,15 @@
                 <div class="stop-code">{{stop.code}}</div>
                 <div class="stop-description">{{stop.description}}</div>
                 <div class="stop-coordinates">{{stop.x}}, {{stop.y}}</div>
+                <div class="stop-time">
+                  <mat-form-field appearance="outline" class="time-field">
+                    <mat-label>Passing Time</mat-label>
+                    <input matInput type="time" 
+                           [value]="getPassingTime(stop.id)"
+                           (change)="updatePassingTime(stop.id, $event)">
+                    <mat-icon matPrefix>schedule</mat-icon>
+                  </mat-form-field>
+                </div>
               </div>
               <div class="connection-line" *ngIf="i < selectedStops.length - 1"></div>
             </div>

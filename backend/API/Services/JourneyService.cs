@@ -29,8 +29,8 @@ public class JourneyService : IJourneyService
                     .Select(js => new JourneyStopDto
                     {
                         StopId = js.StopId,
-                        StopCode = js.Stop.Code,
-                        StopDescription = js.Stop.Description,
+                        Code = js.Stop.Code,
+                        Description = js.Stop.Description,
                         X = js.Stop.X,
                         Y = js.Stop.Y,
                         Order = js.Order,
@@ -60,8 +60,8 @@ public class JourneyService : IJourneyService
                 .Select(js => new JourneyStopDto
                 {
                     StopId = js.StopId,
-                    StopCode = js.Stop.Code,
-                    StopDescription = js.Stop.Description,
+                    Code = js.Stop.Code,
+                    Description = js.Stop.Description,
                     X = js.Stop.X,
                     Y = js.Stop.Y,
                     Order = js.Order,

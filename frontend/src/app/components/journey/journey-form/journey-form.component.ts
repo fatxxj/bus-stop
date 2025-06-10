@@ -12,6 +12,8 @@ import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatInputModule } from '@angular/material/input';
 import { MatListModule } from '@angular/material/list';
 import { MatIconModule } from '@angular/material/icon';
+import { MatTimepickerModule } from '@angular/material/timepicker';
+import { MatNativeDateModule } from '@angular/material/core';
 
 @Component({
   selector: 'app-journey-form',
@@ -28,7 +30,9 @@ import { MatIconModule } from '@angular/material/icon';
     MatInputModule,
     MatListModule,
     DragDropModule,
-    MatIconModule
+    MatIconModule,
+    MatTimepickerModule,
+    MatNativeDateModule
   ]
 })
 export class JourneyFormComponent implements OnInit {
@@ -82,26 +86,23 @@ export class JourneyFormComponent implements OnInit {
   onSubmit(): void {
     if (this.journeyForm.valid && this.selectedStops.length >= 2) {
       this.isFormSubmitting = true;
-      if (this.isEditMode) {
-        this.journeyStops = this.selectedStops.map((stop, index) => {
-          const existingStop = this.journeyStops.find(js => js.stopId === stop.id);
-          return {
-            stopId: stop.id,
-            order: index + 1,
-            passingTime: existingStop?.passingTime || '00:00:00'
-          };
-        });
-      } else {
-        this.journeyStops = this.selectedStops.map((stop, index) => ({
+      // Always preserve the current passingTime for each stop
+      this.journeyStops = this.selectedStops.map((stop, index) => {
+        const existingStop = this.journeyStops.find(js => js.stopId === stop.id);
+        return {
           stopId: stop.id,
           order: index + 1,
-          passingTime: '00:00:00'
-        }));
-      }
+          passingTime: existingStop?.passingTime || '00:00:00'
+        };
+      });
 
       const journeyData: JourneyCreate = {
         ...this.journeyForm.value,
-        stops: this.journeyStops
+        stops: this.journeyStops.map(stop => ({
+          stopId: stop.stopId,
+          order: stop.order,
+          passingTime: stop.passingTime + ':00' // Ensure format is HH:mm:ss
+        }))
       };
 
       if (this.isEditMode) {
@@ -217,5 +218,22 @@ export class JourneyFormComponent implements OnInit {
       order: index + 1,
       passingTime: '00:00:00'
     }));
+  }
+
+  updatePassingTime(stopId: number, event: Event): void {
+    const input = event.target as HTMLInputElement;
+    const time = input.value;
+    const journeyStop = this.journeyStops.find(js => js.stopId === stopId);
+    if (journeyStop) {
+      journeyStop.passingTime = time;
+      console.log('Updated passingTime:', journeyStop);
+    } else {
+      console.warn('JourneyStop not found for stopId:', stopId);
+    }
+  }
+
+  getPassingTime(stopId: number): string {
+    const journeyStop = this.journeyStops.find(js => js.stopId === stopId);
+    return journeyStop?.passingTime || '00:00:00';
   }
 } 

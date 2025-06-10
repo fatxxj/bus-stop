@@ -11,8 +11,8 @@ public class JourneyDto
 public class JourneyStopDto
 {
     public int StopId { get; set; }
-    public string StopCode { get; set; } = string.Empty;
-    public string StopDescription { get; set; } = string.Empty;
+    public string Code { get; set; } = string.Empty;
+    public string Description { get; set; } = string.Empty;
     public double X { get; set; }
     public double Y { get; set; }
     public int Order { get; set; }
