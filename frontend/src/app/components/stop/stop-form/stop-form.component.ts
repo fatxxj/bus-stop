@@ -37,8 +37,8 @@ export class StopFormComponent implements OnInit {
     this.stopForm = this.fb.group({
       code: ['', [Validators.required, Validators.pattern('^[A-Za-z0-9]+$')]],
       description: ['', Validators.required],
-      x: ['', [Validators.required, Validators.pattern('^-?[0-9]*\.?[0-9]+$')]],
-      y: ['', [Validators.required, Validators.pattern('^-?[0-9]*\.?[0-9]+$')]]
+      x: ['', [Validators.required, Validators.pattern('^-?([1-8]?[0-9](\.[0-9]+)?|90(\.0+)?)$')]],
+      y: ['', [Validators.required, Validators.pattern('^-?([1-8]?[0-9](\.[0-9]+)?|90(\.0+)?)$')]]
     });
   }
 
