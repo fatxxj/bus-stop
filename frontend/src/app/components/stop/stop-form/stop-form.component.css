@@ -265,6 +265,12 @@
   vertical-align: middle !important;
 }
 
+.modern-field ::ng-deep input::placeholder,
+.modern-field ::ng-deep textarea::placeholder {
+  color: #94a3b8 !important;
+  font-style: italic !important;
+}
+
 .modern-field ::ng-deep input {
   text-align: center !important;
 }
@@ -783,7 +789,7 @@
   left: 50%;
   width: 0;
   height: 3px;
-  background: linear-gradient(90deg, #10b981, #059669);
+  background: linear-gradient(90deg, #ffffff, #ffffff);
   transform: translateX(-50%);
   transition: width 0.3s ease;
   border-radius: 2px;
@@ -798,7 +804,7 @@
   position: relative;
 }
 
-.coordinate-field::after {
+/* .coordinate-field::after {
   content: '🎯';
   position: absolute;
   top: 50%;
@@ -806,7 +812,7 @@
   transform: translateY(-50%);
   font-size: 14px;
   animation: spin 3s linear infinite;
-}
+} */
 
 @keyframes spin {
   from { transform: translateY(-50%) rotate(0deg); }
@@ -1001,4 +1007,14 @@ form {
   flex-direction: column;
   height: 100%;
   overflow: hidden;
+}
+
+.modern-field ::ng-deep .mat-mdc-form-field-error {
+  color: #ef4444 !important;
+  font-size: 0.875rem !important;
+  font-weight: 500 !important;
+}
+
+.modern-field ::ng-deep .mat-mdc-form-field-error-wrapper {
+  padding: 0 !important;
 }
