@@ -145,7 +145,23 @@ export class JourneyListComponent implements OnInit {
   }
 
   applyFilter(event: Event): void {
-    const filterValue = (event.target as HTMLInputElement).value;
-    this.dataSource.filter = filterValue.trim().toLowerCase();
+    const filterValue = (event.target as HTMLInputElement).value.trim().toLowerCase();
+    
+    this.dataSource.filterPredicate = (journey: Journey, filter: string) => {
+      // Check journey code and description
+      const matchesJourneyInfo = 
+        journey.code.toLowerCase().includes(filter) ||
+        (journey.description && journey.description.toLowerCase().includes(filter));
+      
+      // Check stops
+      const matchesStops = journey.stops.some(stop => 
+        stop.code.toLowerCase().includes(filter) ||
+        (stop.description && stop.description.toLowerCase().includes(filter))
+      );
+      
+      return matchesJourneyInfo || matchesStops;
+    };
+    
+    this.dataSource.filter = filterValue;
   }
 } 

@@ -3,10 +3,8 @@
 
 /* Material Icons font family */
 .material-icons {
-  font-family: 'Material Icons' !important;
-  font-weight: normal;
-  font-style: normal;
-  font-size: 24px;  /* Preferred icon size */
+  font-family: 'Material Icons';
+  font-size: 24px;
   display: inline-block;
   line-height: 1;
   text-transform: none;
@@ -15,9 +13,6 @@
   white-space: nowrap;
   direction: ltr;
   -webkit-font-smoothing: antialiased;
-  text-rendering: optimizeLegibility;
-  -moz-osx-font-smoothing: grayscale;
-  font-feature-settings: 'liga';
 }
 
 /* Reset and base styles */
@@ -50,8 +45,8 @@
   
   /* Shadows */
   --shadow-sm: 0 1px 2px 0 rgb(0 0 0 / 0.05);
-  --shadow-md: 0 4px 6px -1px rgb(0 0 0 / 0.1), 0 2px 4px -2px rgb(0 0 0 / 0.1);
-  --shadow-lg: 0 10px 15px -3px rgb(0 0 0 / 0.1), 0 4px 6px -4px rgb(0 0 0 / 0.1);
+  --shadow-md: 0 4px 6px -1px rgb(0 0 0 / 0.1);
+  --shadow-lg: 0 10px 15px -3px rgb(0 0 0 / 0.1);
   --shadow-xl: 0 20px 25px -5px rgb(0 0 0 / 0.1), 0 8px 10px -6px rgb(0 0 0 / 0.1);
   
   /* Border Radius */
@@ -90,12 +85,12 @@ body {
   box-shadow: var(--shadow-md);
   border: 1px solid var(--medium-gray);
   overflow: hidden;
-  transition: all 0.3s ease;
+  transition: transform 0.2s ease;
 }
 
 .card:hover {
-  box-shadow: var(--shadow-lg);
   transform: translateY(-2px);
+  box-shadow: var(--shadow-lg);
 }
 
 .btn {
@@ -115,14 +110,13 @@ body {
 }
 
 .btn-primary {
-  background: linear-gradient(135deg, var(--primary-blue) 0%, var(--primary-light) 100%);
+  background: var(--primary-blue);
   color: var(--white);
 }
 
 .btn-primary:hover {
-  background: linear-gradient(135deg, #1e40af 0%, #2563eb 100%);
+  background: #1e40af;
   transform: translateY(-1px);
-  box-shadow: var(--shadow-md);
 }
 
 .btn-secondary {
@@ -137,17 +131,17 @@ body {
 }
 
 .btn-success {
-  background: linear-gradient(135deg, var(--accent-green) 0%, #059669 100%);
+  background: var(--accent-green);
   color: var(--white);
 }
 
 .btn-warning {
-  background: linear-gradient(135deg, var(--secondary-orange) 0%, #d97706 100%);
+  background: var(--secondary-orange);
   color: var(--white);
 }
 
 .btn-danger {
-  background: linear-gradient(135deg, var(--error) 0%, #b91c1c 100%);
+  background: var(--error);
   color: var(--white);
 }
 
@@ -170,14 +164,12 @@ body {
   border: 2px solid var(--medium-gray);
   border-radius: var(--radius-md);
   font-size: 1rem;
-  transition: all 0.2s ease;
-  background: var(--white);
+  transition: border-color 0.2s ease;
 }
 
 .form-input:focus {
   outline: none;
   border-color: var(--primary-light);
-  box-shadow: 0 0 0 3px rgb(59 130 246 / 0.1);
 }
 
 /* Table Styles */
@@ -191,7 +183,7 @@ body {
 }
 
 .data-table th {
-  background: linear-gradient(135deg, var(--primary-blue) 0%, var(--primary-light) 100%);
+  background: var(--primary-blue);
   color: var(--white);
   padding: var(--space-lg);
   text-align: left;
@@ -224,7 +216,6 @@ body {
   font-size: 0.75rem;
   font-weight: 600;
   text-transform: uppercase;
-  letter-spacing: 0.05em;
 }
 
 .badge-success {
@@ -244,12 +235,12 @@ body {
 
 /* Animation Classes */
 .fade-in {
-  animation: fadeIn 0.5s ease-in-out;
+  animation: fadeIn 0.3s ease-in;
 }
 
 @keyframes fadeIn {
-  from { opacity: 0; transform: translateY(20px); }
-  to { opacity: 1; transform: translateY(0); }
+  from { opacity: 0; }
+  to { opacity: 1; }
 }
 
 .slide-up {
@@ -285,46 +276,39 @@ body {
 }
 
 @media (max-width: 768px) {
-  :root {
-    --space-md: 0.75rem;
-    --space-lg: 1rem;
-    --space-xl: 1.5rem;
+  .container {
+    padding: 0 var(--space-sm);
   }
   
   .btn {
     padding: var(--space-xs) var(--space-md);
-    font-size: 0.8rem;
   }
   
   .data-table {
-    font-size: 0.875rem;
-  }
-  
-  .data-table th,
-  .data-table td {
-    padding: var(--space-sm);
+    display: block;
+    overflow-x: auto;
   }
 }
 
 @media (max-width: 480px) {
   .btn {
     width: 100%;
-    justify-content: center;
   }
   
-  .data-table {
-    font-size: 0.8rem;
+  .data-table th,
+  .data-table td {
+    padding: var(--space-md);
   }
 }
 
 /* Print Styles */
 @media print {
   .btn, .no-print {
-    display: none !important;
+    display: none;
   }
   
   .card {
     box-shadow: none;
-    border: 1px solid #000;
+    border: 1px solid #ddd;
   }
 }

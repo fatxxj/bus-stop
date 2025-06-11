@@ -88,8 +88,8 @@
   </div>
 
   <!-- Journey Cards Grid -->
-  <div class="journeys-grid" *ngIf="!loading && dataSource.data.length > 0">
-    <div class="journey-card card" *ngFor="let journey of dataSource.data" 
+  <div class="journeys-grid" *ngIf="!loading && getFilteredJourneys().length > 0">
+    <div class="journey-card card" *ngFor="let journey of getFilteredJourneys()" 
          [class.highlight]="isHighlighted(journey)">
       
       <!-- Card Header -->
@@ -173,8 +173,6 @@
       </div>
     </div>
   </div>
-
-
 
   <!-- Empty State -->
   <div class="empty-state" *ngIf="!loading && dataSource.data.length === 0">
