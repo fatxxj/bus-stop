@@ -67,7 +67,7 @@ export class JourneyFormComponent implements OnInit {
       this.journeyStops = this.data.stops.map((stop, index) => ({
         stopId: stop.id,
         order: index + 1,
-        passingTime: '00:00:00'
+        passingTime: stop.passingTime || '00:00:00'
       }));
     }
   }

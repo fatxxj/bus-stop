@@ -194,6 +194,22 @@
   color: #6b7280;
 }
 
+.stop-time {
+  display: flex;
+  align-items: center;
+  gap: 4px;
+  margin-top: 4px;
+  color: #64748b;
+  font-size: 0.875rem;
+}
+
+.stop-time mat-icon {
+  font-size: 16px;
+  width: 16px;
+  height: 16px;
+  color: #64748b;
+}
+
 .empty-state {
   display: flex;
   flex-direction: column;

@@ -60,6 +60,10 @@
             <div class="stop-name">{{stop.code}}</div>
             <div class="stop-description">{{stop.description}}</div>
             <div class="stop-coordinates">{{stop.x}}, {{stop.y}}</div>
+            <div class="stop-time">
+              <mat-icon>schedule</mat-icon>
+              <span>{{getPassingTime(stop)}}</span>
+            </div>
           </div>
         </div>
 

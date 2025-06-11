@@ -1,10 +1,14 @@
 import { Stop } from './stop.model';
 
+export interface JourneyStopWithTime extends Stop {
+    passingTime: string;
+}
+
 export interface Journey {
     id: number;
     code: string;
     description: string;
-    stops: Stop[];
+    stops: JourneyStopWithTime[];
 }
 
 export interface JourneyStop {

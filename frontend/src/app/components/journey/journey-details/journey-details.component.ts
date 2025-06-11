@@ -1,6 +1,6 @@
 import { Component, Inject } from '@angular/core';
 import { MatDialogRef, MAT_DIALOG_DATA, MatDialogModule } from '@angular/material/dialog';
-import { Journey } from '../../../models/journey.model';
+import { Journey, JourneyStopWithTime } from '../../../models/journey.model';
 import { CommonModule } from '@angular/common';
 import { MatButtonModule } from '@angular/material/button';
 import { MatIconModule } from '@angular/material/icon';
@@ -25,5 +25,9 @@ export class JourneyDetailsComponent {
 
   onClose(): void {
     this.dialogRef.close();
+  }
+
+  getPassingTime(stop: JourneyStopWithTime): string {
+    return stop.passingTime || '00:00:00';
   }
 } 
