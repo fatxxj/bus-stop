@@ -41,6 +41,7 @@ export class StopListComponent implements OnInit {
   totalItems = 0;
   pageSize = 4;
   currentPage = 1;
+  pageSizeOptions = [5, 10, 25, 50];
 
   @ViewChild(MatPaginator) paginator!: MatPaginator;
 
@@ -56,6 +57,10 @@ export class StopListComponent implements OnInit {
 
   ngOnInit(): void {
     this.loadStops();
+  }
+
+  ngAfterViewInit() {
+    this.dataSource.paginator = this.paginator;
   }
 
   loadStops(): void {
