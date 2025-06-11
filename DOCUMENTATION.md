@@ -108,21 +108,6 @@ The project follows a modern web application architecture with:
    - Repository pattern implementation
    - SQL Server database
 
-### API Endpoints
-
-1. **Authentication Endpoints**
-   - POST `/api/auth/register`: User registration
-   - POST `/api/auth/login`: User login
-   - POST `/api/auth/logout`: User logout
-   - PUT `/api/auth/update`: Update user profile
-
-2. **Journey Endpoints**
-   - GET `/api/journeys`: Get all journeys (paginated)
-   - GET `/api/journeys/{id}`: Get specific journey
-   - POST `/api/journeys`: Create new journey
-   - PUT `/api/journeys/{id}`: Update journey
-   - DELETE `/api/journeys/{id}`: Delete journey
-
 ## Security Best Practices
 
 1. **API Security**
@@ -140,6 +125,106 @@ The project follows a modern web application architecture with:
    - Secure token storage
    - Automatic session expiration
    - Proper logout handling
+
+### API Endpoints
+
+1. **Authentication Endpoints**
+   - POST `/api/auth/register`: User registration
+   - POST `/api/auth/login`: User login
+   - POST `/api/auth/logout`: User logout
+   - PUT `/api/auth/update`: Update user profile
+
+2. **Journey Endpoints**
+   - GET `/api/journeys`: Get all journeys (paginated)
+   - GET `/api/journeys/{id}`: Get specific journey
+   - POST `/api/journeys`: Create new journey
+   - PUT `/api/journeys/{id}`: Update journey
+   - DELETE `/api/journeys/{id}`: Delete journey
+
+## Geocoding Functionality
+
+### Stop Location Management
+
+1. **Geocoding Service**
+   - Integration with OpenStreetMap Nominatim API
+   - Provides bidirectional geocoding:
+     - Forward geocoding: Convert city names to coordinates
+     - Reverse geocoding: Convert coordinates to city names
+
+2. **Stop Creation Process**
+   - When creating a stop, users can:
+     - Enter a city name to automatically fetch coordinates
+     - Enter coordinates to automatically fetch the city name
+   - The system automatically validates and formats the location data
+   - Coordinates are stored in the database in decimal degrees format
+
+3. **Implementation Details**
+   - Frontend service: `GeocodingService`
+   - Handles API calls to Nominatim
+   - Implements rate limiting to comply with API usage policies
+   - Caches results to minimize API calls
+   - Error handling for invalid locations or API failures
+
+4. **Usage Example**
+   ```typescript
+   // Frontend implementation
+   const geocodingService = new GeocodingService();
+
+   // Forward geocoding (city name to coordinates)
+   const coordinates = await geocodingService.getCoordinates('London, UK');
+   // Returns: { lat: 51.5074, lon: -0.1278 }
+
+   // Reverse geocoding (coordinates to city name)
+   const location = await geocodingService.getLocation(51.5074, -0.1278);
+   // Returns: "London, Greater London, England, United Kingdom"
+   ```
+## Distance Calculation
+
+### Journey Distance Management
+
+1. **Distance Calculation Service**
+   - Integration with OpenStreetMap OSRM API
+   - Calculates actual driving distances between stops
+   - Provides accurate route-based distances
+   - Handles multiple stops in sequence
+
+2. **Distance Calculation Process**
+   - When creating a journey:
+     - System automatically calculates distances between consecutive stops
+     - Uses the actual road network for accurate measurements
+     - Returns distances in kilometers
+     - Handles international routes and different countries
+
+3. **Implementation Details**
+   - Frontend service: `DistanceCalculationService`
+   - Makes API calls to OSRM for each segment
+   - Implements error handling for:
+     - Invalid coordinates
+     - Unreachable locations
+     - API failures
+   - Caches results to optimize performance
+
+4. **Usage Example**
+   ```typescript
+   // Frontend implementation
+   const distanceService = new DistanceCalculationService();
+
+   // Calculate distance between two stops
+   const distance = await distanceService.calculateDistance(
+   { lat: 51.5074, lon: -0.1278 }, // London
+   { lat: 48.8566, lon: 2.3522 }   // Paris
+   );
+   // Returns: 343.5 (kilometers)
+
+   // Calculate total journey distance
+   const totalDistance = await distanceService.calculateTotalDistance([
+   { lat: 51.5074, lon: -0.1278 }, // London
+   { lat: 48.8566, lon: 2.3522 },  // Paris
+   { lat: 41.9028, lon: 12.4964 }  // Rome
+   ]);
+   // Returns: 1432.8 (kilometers)
+   ```
+
 
 ## Development Setup
 

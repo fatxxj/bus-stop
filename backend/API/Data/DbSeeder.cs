@@ -115,5 +115,60 @@ public static class DbSeeder
             bolognaStop
         );
         await context.SaveChangesAsync();
+
+        // Create Milano to Rome journey
+        var milanToRomeJourney = new Journey
+        {
+            Code = "MIL-ROM",
+            Description = "Milan to Rome Express"
+        };
+
+        var milanToRomeStops = new List<JourneyStop>
+        {
+            new JourneyStop
+            {
+                Journey = milanToRomeJourney,
+                Stop = milanStop,
+                Order = 1,
+                PassingTime = new TimeSpan(8, 0, 0) // 8:00 AM
+            },
+            new JourneyStop
+            {
+                Journey = milanToRomeJourney,
+                Stop = romeStop,
+                Order = 2,
+                PassingTime = new TimeSpan(12, 30, 0) // 12:30 PM
+            }
+        };
+
+        // Create Florence to Venice journey
+        var florenceToVeniceJourney = new Journey
+        {
+            Code = "FLR-VCE",
+            Description = "Florence to Venice Express"
+        };
+
+        var florenceToVeniceStops = new List<JourneyStop>
+        {
+            new JourneyStop
+            {
+                Journey = florenceToVeniceJourney,
+                Stop = florenceStop,
+                Order = 1,
+                PassingTime = new TimeSpan(9, 15, 0) // 9:15 AM
+            },
+            new JourneyStop
+            {
+                Journey = florenceToVeniceJourney,
+                Stop = veniceStop,
+                Order = 2,
+                PassingTime = new TimeSpan(11, 45, 0) // 11:45 AM
+            }
+        };
+
+        await context.Journeys.AddRangeAsync(milanToRomeJourney, florenceToVeniceJourney);
+        await context.JourneyStops.AddRangeAsync(milanToRomeStops);
+        await context.JourneyStops.AddRangeAsync(florenceToVeniceStops);
+        await context.SaveChangesAsync();
     }
 } 
