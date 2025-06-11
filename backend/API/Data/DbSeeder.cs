@@ -119,7 +119,7 @@ public static class DbSeeder
         // Create Milano to Rome journey
         var milanToRomeJourney = new Journey
         {
-            Code = "MIL-ROM",
+            Code = "MILROM",
             Description = "Milan to Rome Express"
         };
 
@@ -144,7 +144,7 @@ public static class DbSeeder
         // Create Florence to Venice journey
         var florenceToVeniceJourney = new Journey
         {
-            Code = "FLR-VCE",
+            Code = "FLRVCE",
             Description = "Florence to Venice Express"
         };
 
