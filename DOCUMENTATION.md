@@ -42,6 +42,29 @@ The project follows a modern web application architecture with:
    - Unauthorized users are redirected to login page
    - API endpoints are protected with authorization middleware
 
+### User Management
+
+1. **Admin Account**
+   - A default admin account is created during database seeding
+   - Admin credentials:
+     - Email: tester@filippo.com
+     - Password: FilippoTUG1!
+   - Admin role provides full access to all features
+   - This account should be used for initial setup and management
+
+2. **User Registration**
+   - New users can register through the registration form
+   - Registration requires:
+     - Valid email address
+     - Password meeting security requirements
+     - First and last name
+   - New users are assigned the default "User" role
+
+3. **User Roles**
+   - Admin: Full access to all features
+   - User: Standard access to basic features
+   - Role-based permissions are enforced throughout the application
+
 ## Frontend Architecture
 
 ### Core Components
