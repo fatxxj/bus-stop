@@ -24,7 +24,8 @@ public class StopService : IStopService
                 Description = s.Description,
                 X = s.X,
                 Y = s.Y,
-                CityName = s.CityName
+                CityName = s.CityName,
+                Connections = s.JourneyStops.Count
             })
             .ToListAsync();
     }

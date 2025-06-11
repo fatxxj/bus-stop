@@ -8,6 +8,7 @@ public class StopDto
     public double X { get; set; }
     public double Y { get; set; }
     public string CityName { get; set; } = string.Empty;
+    public int Connections { get; set; }
 }
 
 public class CreateStopDto

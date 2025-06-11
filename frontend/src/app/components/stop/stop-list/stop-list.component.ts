@@ -115,9 +115,7 @@ export class StopListComponent implements OnInit {
   }
 
   getRouteConnections(): number {
-    return this.dataSource.data.reduce((total, stop) => {
-      return total + (stop.connections?.length || 0);
-    }, 0);
+    return this.dataSource.data.reduce((total, stop) => total + stop.connections, 0);
   }
 
   clearSearch(input: HTMLInputElement): void {

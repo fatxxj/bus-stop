@@ -6,7 +6,7 @@ export interface Stop {
     y: number;
     cityName: string;
     isActive: boolean;
-    connections?: number[];
+    connections: number;
 }
 
 export interface StopCreate {
