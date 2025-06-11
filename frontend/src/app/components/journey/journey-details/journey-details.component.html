@@ -56,11 +56,13 @@
       <div class="stops-list">
         <div class="stop-item" *ngFor="let stop of journey.stops; let i = index">
           <div class="stop-number">{{i + 1}}</div>
-          <div class="stop-info">
-            <div class="stop-name">{{stop.code}}</div>
-            <div class="stop-description">{{stop.description}}</div>
-            <div class="stop-coordinates">{{stop.x}}, {{stop.y}}</div>
-            <div class="stop-time">
+          <div class="stop-card-flex">
+            <div class="stop-info">
+              <div class="stop-name">{{stop.code}}</div>
+              <div class="stop-description">{{stop.description}}</div>
+              <div class="stop-coordinates">{{stop.x}}, {{stop.y}}</div>
+            </div>
+            <div class="stop-time right">
               <mat-icon>schedule</mat-icon>
               <span>{{getPassingTime(stop)}}</span>
             </div>
