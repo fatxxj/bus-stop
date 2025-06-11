@@ -55,8 +55,8 @@
           <path d="M3 11L12 2L21 11M5 9V20C5 20.5523 5.44772 21 6 21H9M15 21H18C18.5523 21 19 20.5523 19 20V9" stroke="currentColor" stroke-width="2"/>
         </svg>
         <h2>Route Planning</h2>
-        <div class="route-stats" *ngIf="selectedStops.length > 0">
-          <span class="stats-badge">{{selectedStops.length}} stops</span>
+        <div class="route-stats" *ngIf="selectedJourneyStops.length > 0">
+          <span class="stats-badge">{{selectedJourneyStops.length}} stops</span>
           <span class="stats-badge">{{calculateRouteDistance()}} km est.</span>
         </div>
       </div>
@@ -139,13 +139,13 @@
             </svg>
             Journey Route
           </h3>
-          <span class="stop-count" *ngIf="selectedStops.length > 0">{{selectedStops.length}} stops</span>
+          <span class="stop-count" *ngIf="selectedJourneyStops.length > 0">{{selectedJourneyStops.length}} stops</span>
         </div>
 
         <div class="stops-scroll-container">
-          <div class="stops-grid" *ngIf="selectedStops.length > 0; else emptyRoute" cdkDropList (cdkDropListDropped)="drop($event)">
+          <div class="stops-grid" *ngIf="selectedJourneyStops.length > 0; else emptyRoute" cdkDropList (cdkDropListDropped)="drop($event)">
             <div class="stop-card selected" 
-                 *ngFor="let stop of selectedStops; let i = index" 
+                 *ngFor="let stop of selectedJourneyStops; let i = index" 
                  cdkDrag>
               <div class="stop-header">
                 <div class="stop-number">{{i + 1}}</div>
@@ -173,13 +173,13 @@
                   <mat-form-field appearance="outline" class="time-field">
                     <mat-label>Passing Time</mat-label>
                     <input matInput type="time" 
-                           [value]="getPassingTime(stop.id)"
-                           (change)="updatePassingTime(stop.id, $event)">
+                           [value]="stop.passingTime"
+                           (change)="updatePassingTime(stop.stopId, $event)">
                     <mat-icon matPrefix>schedule</mat-icon>
                   </mat-form-field>
                 </div>
               </div>
-              <div class="connection-line" *ngIf="i < selectedStops.length - 1"></div>
+              <div class="connection-line" *ngIf="i < selectedJourneyStops.length - 1"></div>
             </div>
           </div>
 
@@ -219,7 +219,7 @@
       </div>
 
       <!-- Quick Actions -->
-      <div class="quick-actions" *ngIf="selectedStops.length > 0">
+      <div class="quick-actions" *ngIf="selectedJourneyStops.length > 0">
         <button type="button" class="action-btn secondary" (click)="clearAllStops()">
           <svg width="16" height="16" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
             <path d="M3 6H21M8 6V4C8 3.44772 8.44772 3 9 3H15C15.5523 3 16 3.44772 16 4V6M19 6L18 20C18 20.5523 17.5523 21 17 21H7C6.44772 21 6 20.5523 6 20L5 6" stroke="currentColor" stroke-width="2"/>
@@ -243,7 +243,7 @@
         </svg>
         Cancel
       </button>
-      <button type="submit" class="action-btn primary" [disabled]="!journeyForm.valid || selectedStops.length < 2">
+      <button type="submit" class="action-btn primary" [disabled]="!journeyForm.valid || selectedJourneyStops.length < 2">
         <svg width="16" height="16" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg" *ngIf="!isFormSubmitting">
           <path d="M9 12L11 14L15 10M21 12C21 16.9706 16.9706 21 12 21C7.02944 21 3 16.9706 3 12C3 7.02944 7.02944 3 12 3C16.9706 3 21 7.02944 21 12Z" stroke="currentColor" stroke-width="2"/>
         </svg>

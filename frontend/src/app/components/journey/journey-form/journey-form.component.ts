@@ -38,16 +38,15 @@ import { MatNativeDateModule } from '@angular/material/core';
 export class JourneyFormComponent implements OnInit {
   journeyForm: FormGroup;
   stops: Stop[] = [];
-  selectedStops: Stop[] = [];
+  selectedJourneyStops: any[] = []; // Use JourneyStopWithTime[]
   isEditMode = false;
-  journeyStops: JourneyStop[] = [];
 
   constructor(
     private fb: FormBuilder,
     private journeyService: JourneyService,
     private stopService: StopService,
     private dialogRef: MatDialogRef<JourneyFormComponent>,
-    @Inject(MAT_DIALOG_DATA) public data: Journey
+    @Inject(MAT_DIALOG_DATA) public data: any // Journey
   ) {
     this.journeyForm = this.fb.group({
       code: ['', [Validators.required, Validators.pattern('^[A-Za-z0-9]+$')]],
@@ -63,54 +62,134 @@ export class JourneyFormComponent implements OnInit {
         code: this.data.code,
         description: this.data.description
       });
-      this.selectedStops = [...this.data.stops];
-      this.journeyStops = this.data.stops.map((stop, index) => ({
-        stopId: stop.id,
+      // Use the incoming stops as the selectedJourneyStops
+      this.selectedJourneyStops = this.data.stops.map((stop: any, index: number) => ({
+        ...stop,
         order: index + 1,
-        passingTime: stop.passingTime || '00:00:00'
+        passingTime: stop.passingTime ? stop.passingTime.substring(0, 5) : '00:00',
       }));
     }
   }
 
   loadStops(): void {
     this.stopService.getStops(1, 1000).subscribe({
-      next: (response: PaginatedResponse<Stop>) => {
+      next: (response: any) => {
         this.stops = response.items;
       },
-      error: (error) => {
+      error: (error: any) => {
         console.error('Error loading stops:', error);
       }
     });
   }
 
-  onSubmit(): void {
-    if (this.journeyForm.valid && this.selectedStops.length >= 2) {
-      this.isFormSubmitting = true;
-      // Always preserve the current passingTime for each stop
-      this.journeyStops = this.selectedStops.map((stop, index) => {
-        const existingStop = this.journeyStops.find(js => js.stopId === stop.id);
-        return {
-          stopId: stop.id,
-          order: index + 1,
-          passingTime: existingStop?.passingTime || '00:00:00'
-        };
+  addStop(stop: Stop): void {
+    if (!this.selectedJourneyStops.find(s => s.stopId === stop.id)) {
+      this.selectedJourneyStops.push({
+        stopId: stop.id,
+        code: stop.code,
+        description: stop.description,
+        x: stop.x,
+        y: stop.y,
+        order: this.selectedJourneyStops.length + 1,
+        passingTime: '00:00',
+        cityName: stop.cityName || '',
       });
+    }
+  }
 
+  removeStop(stop: any): void {
+    const index = this.selectedJourneyStops.findIndex(s => s.stopId === stop.stopId);
+    if (index !== -1) {
+      this.selectedJourneyStops.splice(index, 1);
+      // Reorder
+      this.selectedJourneyStops = this.selectedJourneyStops.map((s, idx) => ({ ...s, order: idx + 1 }));
+    }
+  }
+
+  drop(event: CdkDragDrop<any[]>): void {
+    moveItemInArray(this.selectedJourneyStops, event.previousIndex, event.currentIndex);
+    this.selectedJourneyStops = this.selectedJourneyStops.map((s, idx) => ({ ...s, order: idx + 1 }));
+  }
+
+  isStopSelected(stop: Stop): boolean {
+    return this.selectedJourneyStops.some(s => s.stopId === stop.id);
+  }
+
+  updatePassingTime(stopId: number, event: Event): void {
+    const input = event.target as HTMLInputElement;
+    const time = input.value;
+    const stop = this.selectedJourneyStops.find(s => s.stopId === stopId);
+    if (stop) {
+      stop.passingTime = time;
+    }
+  }
+
+  getAvailableStops(): Stop[] {
+    return this.stops.filter(stop => !this.isStopSelected(stop));
+  }
+
+  getFilteredAvailableStops(): Stop[] {
+    const available = this.getAvailableStops();
+    if (!this.searchTerm) return available;
+    const term = this.searchTerm.toLowerCase();
+    return available.filter(stop =>
+      stop.code.toLowerCase().includes(term) ||
+      stop.description.toLowerCase().includes(term)
+    );
+  }
+
+  calculateRouteDistance(): string {
+    if (this.selectedJourneyStops.length < 2) return '0';
+    let totalDistance = 0;
+    for (let i = 0; i < this.selectedJourneyStops.length - 1; i++) {
+      const stop1 = this.selectedJourneyStops[i];
+      const stop2 = this.selectedJourneyStops[i + 1];
+      const lat1 = stop1.y * Math.PI / 180;
+      const lon1 = stop1.x * Math.PI / 180;
+      const lat2 = stop2.y * Math.PI / 180;
+      const lon2 = stop2.x * Math.PI / 180;
+      const dLat = lat2 - lat1;
+      const dLon = lon2 - lon1;
+      const a = Math.sin(dLat/2) * Math.sin(dLat/2) +
+                Math.cos(lat1) * Math.cos(lat2) *
+                Math.sin(dLon/2) * Math.sin(dLon/2);
+      const c = 2 * Math.atan2(Math.sqrt(a), Math.sqrt(1-a));
+      const R = 6371;
+      const distance = R * c;
+      totalDistance += distance;
+    }
+    return totalDistance.toFixed(1);
+  }
+
+  clearAllStops(): void {
+    this.selectedJourneyStops = [];
+  }
+
+  reverseRoute(): void {
+    this.selectedJourneyStops.reverse();
+    this.selectedJourneyStops = this.selectedJourneyStops.map((s, idx) => ({ ...s, order: idx + 1 }));
+  }
+
+  searchTerm: string = '';
+  isFormSubmitting: boolean = false;
+
+  onSubmit(): void {
+    if (this.journeyForm.valid && this.selectedJourneyStops.length >= 2) {
+      this.isFormSubmitting = true;
       const journeyData: JourneyCreate = {
         ...this.journeyForm.value,
-        stops: this.journeyStops.map(stop => ({
+        stops: this.selectedJourneyStops.map(stop => ({
           stopId: stop.stopId,
           order: stop.order,
-          passingTime: stop.passingTime + ':00' // Ensure format is HH:mm:ss
+          passingTime: stop.passingTime + ':00', // Ensure format is HH:mm:ss
         }))
       };
-
       if (this.isEditMode) {
         this.journeyService.updateJourney(this.data.id, journeyData).subscribe({
           next: () => {
             this.dialogRef.close(true);
           },
-          error: (error) => {
+          error: (error: any) => {
             console.error('Error updating journey:', error);
             this.isFormSubmitting = false;
           }
@@ -120,7 +199,7 @@ export class JourneyFormComponent implements OnInit {
           next: () => {
             this.dialogRef.close(true);
           },
-          error: (error) => {
+          error: (error: any) => {
             console.error('Error creating journey:', error);
             this.isFormSubmitting = false;
           }
@@ -131,125 +210,5 @@ export class JourneyFormComponent implements OnInit {
 
   onCancel(): void {
     this.dialogRef.close();
-  }
-
-  addStop(stop: Stop): void {
-    if (!this.selectedStops.find(s => s.id === stop.id)) {
-      this.selectedStops.push(stop);
-      this.journeyStops.push({
-        stopId: stop.id,
-        order: this.selectedStops.length,
-        passingTime: '00:00:00'
-      });
-    }
-  }
-
-  removeStop(stop: Stop): void {
-    const index = this.selectedStops.findIndex(s => s.id === stop.id);
-    if (index !== -1) {
-      this.selectedStops.splice(index, 1);
-      this.journeyStops.splice(index, 1);
-      this.journeyStops = this.journeyStops.map((journeyStop, idx) => ({
-        ...journeyStop,
-        order: idx + 1
-      }));
-    }
-  }
-
-  drop(event: CdkDragDrop<Stop[]>): void {
-    moveItemInArray(this.selectedStops, event.previousIndex, event.currentIndex);
-    this.journeyStops = this.selectedStops.map((stop, index) => {
-      const existingStop = this.journeyStops.find(js => js.stopId === stop.id);
-      return {
-        stopId: stop.id,
-        order: index + 1,
-        passingTime: existingStop?.passingTime || '00:00:00'
-      };
-    });
-  }
-
-  isStopSelected(stop: Stop): boolean {
-    return this.selectedStops.some(s => s.id === stop.id);
-  }
-
-  searchTerm: string = '';
-  isFormSubmitting: boolean = false;
-
-  getAvailableStops(): Stop[] {
-    return this.stops.filter(stop => !this.isStopSelected(stop));
-  }
-
-  getFilteredAvailableStops(): Stop[] {
-    const available = this.getAvailableStops();
-    if (!this.searchTerm) return available;
-    
-    const term = this.searchTerm.toLowerCase();
-    return available.filter(stop => 
-      stop.code.toLowerCase().includes(term) || 
-      stop.description.toLowerCase().includes(term)
-    );
-  }
-
-  calculateRouteDistance(): string {
-    if (this.selectedStops.length < 2) return '0';
-    
-    let totalDistance = 0;
-    for (let i = 0; i < this.selectedStops.length - 1; i++) {
-      const stop1 = this.selectedStops[i];
-      const stop2 = this.selectedStops[i + 1];
-      
-      // Convert coordinates to radians
-      const lat1 = stop1.y * Math.PI / 180;
-      const lon1 = stop1.x * Math.PI / 180;
-      const lat2 = stop2.y * Math.PI / 180;
-      const lon2 = stop2.x * Math.PI / 180;
-      
-      // Haversine formula
-      const dLat = lat2 - lat1;
-      const dLon = lon2 - lon1;
-      const a = Math.sin(dLat/2) * Math.sin(dLat/2) +
-                Math.cos(lat1) * Math.cos(lat2) *
-                Math.sin(dLon/2) * Math.sin(dLon/2);
-      const c = 2 * Math.atan2(Math.sqrt(a), Math.sqrt(1-a));
-      
-      // Earth's radius in kilometers
-      const R = 6371;
-      const distance = R * c;
-      
-      totalDistance += distance;
-    }
-    
-    return totalDistance.toFixed(1);
-  }
-
-  clearAllStops(): void {
-    this.selectedStops = [];
-    this.journeyStops = [];
-  }
-
-  reverseRoute(): void {
-    this.selectedStops.reverse();
-    this.journeyStops = this.selectedStops.map((stop, index) => ({
-      stopId: stop.id,
-      order: index + 1,
-      passingTime: '00:00:00'
-    }));
-  }
-
-  updatePassingTime(stopId: number, event: Event): void {
-    const input = event.target as HTMLInputElement;
-    const time = input.value;
-    const journeyStop = this.journeyStops.find(js => js.stopId === stopId);
-    if (journeyStop) {
-      journeyStop.passingTime = time;
-      console.log('Updated passingTime:', journeyStop);
-    } else {
-      console.warn('JourneyStop not found for stopId:', stopId);
-    }
-  }
-
-  getPassingTime(stopId: number): string {
-    const journeyStop = this.journeyStops.find(js => js.stopId === stopId);
-    return journeyStop?.passingTime || '00:00:00';
   }
 } 
