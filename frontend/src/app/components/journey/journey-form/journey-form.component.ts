@@ -197,13 +197,29 @@ export class JourneyFormComponent implements OnInit {
     for (let i = 0; i < this.selectedStops.length - 1; i++) {
       const stop1 = this.selectedStops[i];
       const stop2 = this.selectedStops[i + 1];
-      const distance = Math.sqrt(
-        Math.pow(stop2.x - stop1.x, 2) + Math.pow(stop2.y - stop1.y, 2)
-      );
+      
+      // Convert coordinates to radians
+      const lat1 = stop1.y * Math.PI / 180;
+      const lon1 = stop1.x * Math.PI / 180;
+      const lat2 = stop2.y * Math.PI / 180;
+      const lon2 = stop2.x * Math.PI / 180;
+      
+      // Haversine formula
+      const dLat = lat2 - lat1;
+      const dLon = lon2 - lon1;
+      const a = Math.sin(dLat/2) * Math.sin(dLat/2) +
+                Math.cos(lat1) * Math.cos(lat2) *
+                Math.sin(dLon/2) * Math.sin(dLon/2);
+      const c = 2 * Math.atan2(Math.sqrt(a), Math.sqrt(1-a));
+      
+      // Earth's radius in kilometers
+      const R = 6371;
+      const distance = R * c;
+      
       totalDistance += distance;
     }
     
-    return (totalDistance / 100).toFixed(1); // Convert to km
+    return totalDistance.toFixed(1);
   }
 
   clearAllStops(): void {
