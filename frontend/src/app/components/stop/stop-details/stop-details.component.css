@@ -90,6 +90,7 @@
   font-weight: 600;
   color: #1a202c;
   margin: 0;
+  word-break: break-word;
 }
 
 .location-section {
@@ -172,4 +173,91 @@
 
 .btn-secondary:hover {
   background: #cbd5e0;
+}
+
+@media (max-width: 768px) {
+  .dialog-header {
+    padding: 1.25rem 1.25rem 0;
+  }
+
+  .dialog-content {
+    padding: 0 1.25rem;
+  }
+
+  .detail-card {
+    padding: 1rem;
+  }
+
+  .detail-icon {
+    width: 36px;
+    height: 36px;
+  }
+
+  .location-section {
+    padding: 1.25rem;
+  }
+
+  .dialog-actions {
+    padding: 1.25rem;
+  }
+}
+
+@media (max-width: 480px) {
+  .dialog-header {
+    padding: 1rem 1rem 0;
+  }
+
+  .dialog-content {
+    padding: 0 1rem;
+  }
+
+  .detail-card {
+    padding: 0.875rem;
+  }
+
+  .detail-icon {
+    width: 32px;
+    height: 32px;
+  }
+
+  .detail-content h3 {
+    font-size: 0.75rem;
+  }
+
+  .detail-value {
+    font-size: 0.875rem;
+  }
+
+  .location-section {
+    padding: 1rem;
+  }
+
+  .section-header h3 {
+    font-size: 1rem;
+  }
+
+  .location-grid {
+    grid-template-columns: 1fr;
+  }
+
+  .coordinate-card {
+    padding: 12px;
+  }
+
+  .coordinate-label {
+    font-size: 0.75rem;
+  }
+
+  .coordinate-value {
+    font-size: 0.875rem;
+  }
+
+  .dialog-actions {
+    padding: 1rem;
+  }
+
+  .btn {
+    padding: 0.625rem 1.25rem;
+    font-size: 0.75rem;
+  }
 }

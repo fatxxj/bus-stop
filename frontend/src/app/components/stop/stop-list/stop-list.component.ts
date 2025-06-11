@@ -101,9 +101,8 @@ export class StopListComponent implements OnInit {
 
   openStopDetails(stop: Stop): void {
     this.dialog.open(StopDetailsComponent, {
-      // width: '500px',
-      width: '40vw',  // 90% of viewport width
-      maxWidth: '1600px',  // Optional: set a maximum width
+      width: '90%',
+      maxWidth: '500px',
       data: stop
     });
   }
