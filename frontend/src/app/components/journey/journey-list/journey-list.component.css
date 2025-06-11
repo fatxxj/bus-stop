@@ -695,16 +695,21 @@
 }
 
 ::ng-deep .mat-mdc-select-panel {
-  background: var(--white);
+  background: rgba(255, 255, 255, 0.95);
+  backdrop-filter: blur(8px);
+  -webkit-backdrop-filter: blur(8px);
   border: 1px solid var(--medium-gray);
   border-radius: var(--radius-md);
   box-shadow: var(--shadow-lg);
+  padding: var(--space-xs) 0;
 }
 
 ::ng-deep .mat-mdc-option {
   color: var(--text-dark);
   font-size: 0.875rem;
   padding: var(--space-sm) var(--space-md);
+  transition: all 0.2s ease;
+  background: transparent;
 }
 
 ::ng-deep .mat-mdc-option:hover:not([disabled]) {
@@ -714,4 +719,5 @@
 ::ng-deep .mat-mdc-option.mat-mdc-selected {
   background: var(--primary-light);
   color: var(--white);
+  font-weight: 500;
 }
