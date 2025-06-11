@@ -376,11 +376,11 @@
 .stop-item {
   display: flex;
   align-items: center;
-  gap: var(--space-sm);
-  padding: var(--space-sm);
-  background: var(--white);
-  border-radius: var(--radius-md);
-  border: 1px solid var(--medium-gray);
+  gap: 8px;
+  padding: 8px;
+  background-color: rgba(255, 255, 255, 0.05);
+  border-radius: 6px;
+  margin-bottom: 4px;
 }
 
 .stop-order {
@@ -407,6 +407,22 @@
   color: var(--text-dark);
   font-size: 0.875rem;
   flex: 1;
+}
+
+.stop-time {
+  display: flex;
+  align-items: center;
+  gap: 4px;
+  color: #64748b;
+  font-size: 0.875rem;
+  margin-left: auto;
+}
+
+.stop-time mat-icon {
+  font-size: 16px;
+  width: 16px;
+  height: 16px;
+  color: #64748b;
 }
 
 .more-stops {

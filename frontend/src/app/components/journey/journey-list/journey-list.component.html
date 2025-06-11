@@ -149,6 +149,10 @@
               <span class="stop-order">{{i + 1}}</span>
               <span class="stop-code">{{stop.code}}</span>
               <span class="stop-name">{{stop.description}}</span>
+              <span class="stop-time">
+                <mat-icon>schedule</mat-icon>
+                {{stop.passingTime}}
+              </span>
             </div>
             <div class="more-stops" *ngIf="journey.stops.length > 3">
               <span>+{{journey.stops.length - 3}} more stops</span>
