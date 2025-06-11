@@ -1,6 +1,7 @@
 using API.DTOs;
 using API.Services;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.Authorization;
 
 namespace API.Controllers;
 
@@ -33,6 +34,7 @@ public class JourneysController : ControllerBase
     }
 
     [HttpPost]
+    [Authorize]
     public async Task<ActionResult<JourneyDto>> CreateJourney(CreateJourneyDto createJourneyDto)
     {
         try
@@ -47,6 +49,7 @@ public class JourneysController : ControllerBase
     }
 
     [HttpPut("{id}")]
+    [Authorize]
     public async Task<ActionResult<JourneyDto>> UpdateJourney(int id, UpdateJourneyDto updateJourneyDto)
     {
         try

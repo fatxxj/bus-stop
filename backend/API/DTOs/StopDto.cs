@@ -22,6 +22,7 @@ public class CreateStopDto
 
 public class UpdateStopDto
 {
+    public string Code { get; set; } = string.Empty;
     public string Description { get; set; } = string.Empty;
     public double X { get; set; }
     public double Y { get; set; }

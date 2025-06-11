@@ -80,6 +80,7 @@ public class StopService : IStopService
         stop.X = updateStopDto.X;
         stop.Y = updateStopDto.Y;
         stop.CityName = updateStopDto.CityName;
+        stop.Code = updateStopDto.Code;
         await _context.SaveChangesAsync();
 
         return new StopDto

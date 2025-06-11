@@ -1,6 +1,7 @@
 using API.DTOs;
 using API.Services;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.Authorization;
 
 namespace API.Controllers;
 
@@ -33,6 +34,7 @@ public class StopsController : ControllerBase
     }
 
     [HttpPost]
+    [Authorize]
     public async Task<ActionResult<StopDto>> CreateStop(CreateStopDto createStopDto)
     {
         try
@@ -47,6 +49,7 @@ public class StopsController : ControllerBase
     }
 
     [HttpPut("{id}")]
+    [Authorize]
     public async Task<ActionResult<StopDto>> UpdateStop(int id, UpdateStopDto updateStopDto)
     {
         try
