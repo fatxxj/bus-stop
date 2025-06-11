@@ -23,7 +23,8 @@ public class StopService : IStopService
                 Code = s.Code,
                 Description = s.Description,
                 X = s.X,
-                Y = s.Y
+                Y = s.Y,
+                CityName = s.CityName
             })
             .ToListAsync();
     }
@@ -39,7 +40,8 @@ public class StopService : IStopService
             Code = stop.Code,
             Description = stop.Description,
             X = stop.X,
-            Y = stop.Y
+            Y = stop.Y,
+            CityName = stop.CityName
         };
     }
 
@@ -50,7 +52,8 @@ public class StopService : IStopService
             Code = createStopDto.Code,
             Description = createStopDto.Description,
             X = createStopDto.X,
-            Y = createStopDto.Y
+            Y = createStopDto.Y,
+            CityName = createStopDto.CityName
         };
 
         _context.Stops.Add(stop);
@@ -62,7 +65,8 @@ public class StopService : IStopService
             Code = stop.Code,
             Description = stop.Description,
             X = stop.X,
-            Y = stop.Y
+            Y = stop.Y,
+            CityName = stop.CityName
         };
     }
 
@@ -74,7 +78,7 @@ public class StopService : IStopService
         stop.Description = updateStopDto.Description;
         stop.X = updateStopDto.X;
         stop.Y = updateStopDto.Y;
-
+        stop.CityName = updateStopDto.CityName;
         await _context.SaveChangesAsync();
 
         return new StopDto
@@ -83,7 +87,8 @@ public class StopService : IStopService
             Code = stop.Code,
             Description = stop.Description,
             X = stop.X,
-            Y = stop.Y
+            Y = stop.Y,
+            CityName = stop.CityName
         };
     }
 

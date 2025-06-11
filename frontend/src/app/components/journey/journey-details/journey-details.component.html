@@ -60,7 +60,10 @@
             <div class="stop-info">
               <div class="stop-name">{{stop.code}}</div>
               <div class="stop-description">{{stop.description}}</div>
-              <div class="stop-coordinates">{{stop.x}}, {{stop.y}}</div>
+              <div class="stop-location">
+                <div class="stop-coordinates">{{stop.x}}, {{stop.y}}</div>
+                <div class="stop-city">{{stop.cityName}}</div>
+              </div>
             </div>
             <div class="stop-time right">
               <mat-icon>schedule</mat-icon>

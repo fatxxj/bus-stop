@@ -46,7 +46,7 @@ export class StopFormComponent implements OnInit {
       description: ['', Validators.required],
       x: ['', [Validators.required, Validators.pattern('^-?([1-8]?[0-9](\.[0-9]+)?|90(\.0+)?)$')]],
       y: ['', [Validators.required, Validators.pattern('^-?([1-8]?[0-9](\.[0-9]+)?|90(\.0+)?)$')]],
-      cityName: ['']
+      cityName: ['', Validators.required]
     });
 
     // Setup city search subscription
@@ -122,7 +122,8 @@ export class StopFormComponent implements OnInit {
         code: this.stopForm.value.code,
         description: this.stopForm.value.description,
         x: this.stopForm.value.x,
-        y: this.stopForm.value.y
+        y: this.stopForm.value.y,
+        cityName: this.stopForm.value.cityName
       };
 
       if (this.isEditMode) {

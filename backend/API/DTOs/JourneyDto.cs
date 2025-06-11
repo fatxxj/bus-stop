@@ -17,6 +17,7 @@ public class JourneyStopDto
     public double Y { get; set; }
     public int Order { get; set; }
     public TimeSpan PassingTime { get; set; }
+    public string CityName { get; set; } = string.Empty;
 }
 
 public class CreateJourneyDto

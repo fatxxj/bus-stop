@@ -200,9 +200,23 @@
   white-space: normal;
 }
 
+.stop-location {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+  margin-top: 4px;
+}
+
 .stop-coordinates {
+  color: #666;
   font-size: 0.875rem;
-  color: #6b7280;
+}
+
+.stop-city {
+  color: #333;
+  font-size: 0.875rem;
+  font-weight: 500;
+  word-break: break-word;
 }
 
 .stop-time {

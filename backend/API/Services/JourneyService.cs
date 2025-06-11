@@ -34,7 +34,8 @@ public class JourneyService : IJourneyService
                         X = js.Stop.X,
                         Y = js.Stop.Y,
                         Order = js.Order,
-                        PassingTime = js.PassingTime
+                        PassingTime = js.PassingTime,
+                        CityName = js.Stop.CityName
                     })
                     .ToList()
             })
@@ -65,7 +66,8 @@ public class JourneyService : IJourneyService
                     X = js.Stop.X,
                     Y = js.Stop.Y,
                     Order = js.Order,
-                    PassingTime = js.PassingTime
+                    PassingTime = js.PassingTime,
+                    CityName = js.Stop.CityName
                 })
                 .ToList()
         };

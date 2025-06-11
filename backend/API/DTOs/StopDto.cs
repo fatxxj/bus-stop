@@ -7,6 +7,7 @@ public class StopDto
     public string Description { get; set; } = string.Empty;
     public double X { get; set; }
     public double Y { get; set; }
+    public string CityName { get; set; } = string.Empty;
 }
 
 public class CreateStopDto
@@ -15,6 +16,7 @@ public class CreateStopDto
     public string Description { get; set; } = string.Empty;
     public double X { get; set; }
     public double Y { get; set; }
+    public string CityName { get; set; } = string.Empty;
 }
 
 public class UpdateStopDto
@@ -22,4 +24,5 @@ public class UpdateStopDto
     public string Description { get; set; } = string.Empty;
     public double X { get; set; }
     public double Y { get; set; }
+    public string CityName { get; set; } = string.Empty;
 } 

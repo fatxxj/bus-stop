@@ -20,5 +20,9 @@ public class Stop
     [Required]
     public double Y { get; set; }
 
+    [Required]
+    [StringLength(255)]
+    public string CityName { get; set; } = string.Empty;
+
     public ICollection<JourneyStop> JourneyStops { get; set; } = new List<JourneyStop>();
 } 
