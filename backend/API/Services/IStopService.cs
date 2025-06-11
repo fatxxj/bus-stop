@@ -5,7 +5,7 @@ namespace API.Services;
 
 public interface IStopService
 {
-    Task<IEnumerable<StopDto>> GetAllStopsAsync();
+    Task<PaginatedResponse<StopDto>> GetAllStopsAsync(PaginationParams paginationParams);
     Task<StopDto?> GetStopByIdAsync(int id);
     Task<StopDto> CreateStopAsync(CreateStopDto createStopDto);
     Task<StopDto?> UpdateStopAsync(int id, UpdateStopDto updateStopDto);

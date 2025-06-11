@@ -89,7 +89,7 @@
 
   <!-- Journey Cards Grid -->
   <div class="journeys-grid" *ngIf="!loading && dataSource.data.length > 0">
-    <div class="journey-card card" *ngFor="let journey of getFilteredJourneys()" 
+    <div class="journey-card card" *ngFor="let journey of dataSource.data" 
          [class.highlight]="isHighlighted(journey)">
       
       <!-- Card Header -->
@@ -173,6 +173,14 @@
       </div>
     </div>
   </div>
+
+  <mat-paginator
+    [length]="totalItems"
+    [pageSize]="pageSize"
+    [pageSizeOptions]="[4, 8, 16, 32]"
+    (page)="onPageChange($event)"
+    aria-label="Select page">
+  </mat-paginator>
 
   <!-- Empty State -->
   <div class="empty-state" *ngIf="!loading && dataSource.data.length === 0">

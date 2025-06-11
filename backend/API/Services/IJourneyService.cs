@@ -4,7 +4,7 @@ namespace API.Services;
 
 public interface IJourneyService
 {
-    Task<IEnumerable<JourneyDto>> GetAllJourneysAsync();
+    Task<PaginatedResponse<JourneyDto>> GetAllJourneysAsync(PaginationParams paginationParams);
     Task<JourneyDto?> GetJourneyByIdAsync(int id);
     Task<JourneyDto> CreateJourneyAsync(CreateJourneyDto createJourneyDto);
     Task<JourneyDto?> UpdateJourneyAsync(int id, UpdateJourneyDto updateJourneyDto);

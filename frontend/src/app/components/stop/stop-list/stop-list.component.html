@@ -228,4 +228,18 @@
     <p>Try adjusting your search terms or filters</p>
     <button class="btn btn-secondary" (click)="clearSearch(input)">Clear Search</button>
   </div>
+
+  <div class="table-container">
+    <table mat-table [dataSource]="dataSource" class="mat-elevation-z8">
+      <!-- ... existing columns ... -->
+    </table>
+
+    <mat-paginator
+      [length]="totalItems"
+      [pageSize]="pageSize"
+      [pageSizeOptions]="[4, 8, 16, 32]"
+      (page)="onPageChange($event)"
+      aria-label="Select page">
+    </mat-paginator>
+  </div>
 </div>

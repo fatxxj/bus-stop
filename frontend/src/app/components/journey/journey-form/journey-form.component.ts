@@ -4,7 +4,7 @@ import { MatDialogRef, MAT_DIALOG_DATA, MatDialogModule } from '@angular/materia
 import { Journey, JourneyCreate, JourneyStop } from '../../../models/journey.model';
 import { Stop } from '../../../models/stop.model';
 import { JourneyService } from '../../../services/journey.service';
-import { StopService } from '../../../services/stop.service';
+import { StopService, PaginatedResponse } from '../../../services/stop.service';
 import { CdkDragDrop, moveItemInArray, DragDropModule } from '@angular/cdk/drag-drop';
 import { CommonModule } from '@angular/common';
 import { MatButtonModule } from '@angular/material/button';
@@ -73,9 +73,9 @@ export class JourneyFormComponent implements OnInit {
   }
 
   loadStops(): void {
-    this.stopService.getStops().subscribe({
-      next: (stops) => {
-        this.stops = stops;
+    this.stopService.getStops(1, 1000).subscribe({
+      next: (response: PaginatedResponse<Stop>) => {
+        this.stops = response.items;
       },
       error: (error) => {
         console.error('Error loading stops:', error);

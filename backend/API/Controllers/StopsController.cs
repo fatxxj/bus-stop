@@ -17,9 +17,9 @@ public class StopsController : ControllerBase
     }
 
     [HttpGet]
-    public async Task<ActionResult<IEnumerable<StopDto>>> GetStops()
+    public async Task<ActionResult<PaginatedResponse<StopDto>>> GetStops([FromQuery] PaginationParams paginationParams)
     {
-        var stops = await _stopService.GetAllStopsAsync();
+        var stops = await _stopService.GetAllStopsAsync(paginationParams);
         return Ok(stops);
     }
 

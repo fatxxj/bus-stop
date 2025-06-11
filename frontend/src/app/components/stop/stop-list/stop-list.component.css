@@ -602,3 +602,99 @@
     justify-content: flex-end;
   }
 }
+
+/* Pagination Styles */
+::ng-deep .mat-mdc-paginator {
+  background: transparent;
+  border: none;
+  margin-top: var(--space-xl);
+}
+
+::ng-deep .mat-mdc-paginator-container {
+  justify-content: center;
+  padding: var(--space-md) 0;
+}
+
+::ng-deep .mat-mdc-paginator-page-size {
+  margin-right: var(--space-xl);
+}
+
+::ng-deep .mat-mdc-paginator-page-size-label {
+  color: var(--text-light);
+  font-size: 0.875rem;
+  margin-right: var(--space-sm);
+}
+
+::ng-deep .mat-mdc-paginator-page-size-select {
+  background: var(--white);
+  border: 1px solid var(--medium-gray);
+  border-radius: var(--radius-md);
+  padding: var(--space-xs) var(--space-md);
+  color: var(--text-dark);
+  font-size: 0.875rem;
+  transition: all 0.2s ease;
+}
+
+::ng-deep .mat-mdc-paginator-page-size-select:hover {
+  border-color: var(--primary-light);
+}
+
+::ng-deep .mat-mdc-paginator-range-label {
+  color: var(--text-light);
+  font-size: 0.875rem;
+  margin: 0 var(--space-md);
+}
+
+::ng-deep .mat-mdc-paginator-navigation-previous,
+::ng-deep .mat-mdc-paginator-navigation-next {
+  background: var(--white);
+  border: 1px solid var(--medium-gray);
+  border-radius: var(--radius-md);
+  color: var(--text-dark);
+  transition: all 0.2s ease;
+}
+
+::ng-deep .mat-mdc-paginator-navigation-previous:hover,
+::ng-deep .mat-mdc-paginator-navigation-next:hover {
+  background: var(--primary-light);
+  border-color: var(--primary-light);
+  color: var(--white);
+}
+
+::ng-deep .mat-mdc-paginator-navigation-previous[disabled],
+::ng-deep .mat-mdc-paginator-navigation-next[disabled] {
+  background: var(--light-gray);
+  border-color: var(--medium-gray);
+  color: var(--text-light);
+  cursor: not-allowed;
+}
+
+::ng-deep .mat-mdc-select-value {
+  color: var(--text-dark);
+}
+
+::ng-deep .mat-mdc-select-arrow {
+  color: var(--text-light);
+}
+
+::ng-deep .mat-mdc-select-panel {
+  background: var(--white);
+  border: 1px solid var(--medium-gray);
+  border-radius: var(--radius-md);
+  box-shadow: var(--shadow-lg);
+}
+
+::ng-deep .mat-mdc-option {
+  color: var(--text-dark);
+  font-size: 0.875rem;
+  padding: var(--space-sm) var(--space-md);
+}
+
+::ng-deep .mat-mdc-option:hover:not([disabled]) {
+  background: var(--light-gray);
+}
+
+::ng-deep .mat-mdc-option.mat-mdc-selected {
+  background: var(--primary-light);
+  color: var(--white);
+}

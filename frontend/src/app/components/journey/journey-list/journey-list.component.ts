@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, ViewChild } from '@angular/core';
 import { Journey } from '../../../models/journey.model';
 import { JourneyService } from '../../../services/journey.service';
 import { MatTableDataSource, MatTableModule } from '@angular/material/table';
@@ -8,12 +8,13 @@ import { MatIconModule } from '@angular/material/icon';
 import { MatTooltipModule } from '@angular/material/tooltip';
 import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatInputModule } from '@angular/material/input';
-import { MatPaginatorModule } from '@angular/material/paginator';
+import { MatPaginatorModule, MatPaginator, PageEvent } from '@angular/material/paginator';
 import { MatSortModule } from '@angular/material/sort';
 import { CommonModule } from '@angular/common';
 import { JourneyFormComponent } from '../journey-form/journey-form.component';
 import { JourneyDetailsComponent } from '../journey-details/journey-details.component';
 import { AuthService } from '../../../services/auth.service';
+import { PaginatedResponse } from '../../../services/stop.service';
 
 @Component({
   selector: 'app-journey-list',
@@ -38,6 +39,11 @@ export class JourneyListComponent implements OnInit {
   dataSource = new MatTableDataSource<Journey>();
   loading = false;
   isAuthenticated = false;
+  totalItems = 0;
+  pageSize = 4;
+  currentPage = 1;
+
+  @ViewChild(MatPaginator) paginator!: MatPaginator;
 
   constructor(
     private journeyService: JourneyService,
@@ -55,9 +61,10 @@ export class JourneyListComponent implements OnInit {
 
   loadJourneys(): void {
     this.loading = true;
-    this.journeyService.getJourneys().subscribe({
-      next: (journeys) => {
-        this.dataSource.data = journeys;
+    this.journeyService.getJourneys(this.currentPage, this.pageSize).subscribe({
+      next: (response: PaginatedResponse<Journey>) => {
+        this.dataSource.data = response.items;
+        this.totalItems = response.totalCount;
         this.loading = false;
       },
       error: (error) => {
@@ -65,6 +72,12 @@ export class JourneyListComponent implements OnInit {
         this.loading = false;
       }
     });
+  }
+
+  onPageChange(event: PageEvent): void {
+    this.currentPage = event.pageIndex + 1;
+    this.pageSize = event.pageSize;
+    this.loadJourneys();
   }
 
   openJourneyForm(journey?: Journey): void {

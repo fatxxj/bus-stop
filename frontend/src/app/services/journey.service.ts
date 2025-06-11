@@ -1,8 +1,9 @@
 import { Injectable } from '@angular/core';
-import { HttpClient } from '@angular/common/http';
+import { HttpClient, HttpParams } from '@angular/common/http';
 import { Observable } from 'rxjs';
 import { Journey, JourneyCreate } from '../models/journey.model';
 import { environment } from '../../environments/environment';
+import { PaginatedResponse } from './stop.service';
 
 @Injectable({
   providedIn: 'root'
@@ -12,8 +13,12 @@ export class JourneyService {
 
   constructor(private http: HttpClient) { }
 
-  getJourneys(): Observable<Journey[]> {
-    return this.http.get<Journey[]>(this.apiUrl);
+  getJourneys(pageNumber: number = 1, pageSize: number = 4): Observable<PaginatedResponse<Journey>> {
+    const params = new HttpParams()
+      .set('pageNumber', pageNumber.toString())
+      .set('pageSize', pageSize.toString());
+    
+    return this.http.get<PaginatedResponse<Journey>>(this.apiUrl, { params });
   }
 
   getJourney(id: number): Observable<Journey> {
@@ -31,4 +36,4 @@ export class JourneyService {
   deleteJourney(id: number): Observable<void> {
     return this.http.delete<void>(`${this.apiUrl}/${id}`);
   }
-} 
+}

@@ -14,11 +14,17 @@ public class JourneyService : IJourneyService
         _context = context;
     }
 
-    public async Task<IEnumerable<JourneyDto>> GetAllJourneysAsync()
+    public async Task<PaginatedResponse<JourneyDto>> GetAllJourneysAsync(PaginationParams paginationParams)
     {
-        return await _context.Journeys
+        var query = _context.Journeys
             .Include(j => j.JourneyStops)
-                .ThenInclude(js => js.Stop)
+                .ThenInclude(js => js.Stop);
+
+        var totalCount = await query.CountAsync();
+
+        var journeys = await query
+            .Skip((paginationParams.PageNumber - 1) * paginationParams.PageSize)
+            .Take(paginationParams.PageSize)
             .Select(j => new JourneyDto
             {
                 Id = j.Id,
@@ -40,6 +46,15 @@ public class JourneyService : IJourneyService
                     .ToList()
             })
             .ToListAsync();
+
+        return new PaginatedResponse<JourneyDto>
+        {
+            Items = journeys,
+            TotalCount = totalCount,
+            PageNumber = paginationParams.PageNumber,
+            PageSize = paginationParams.PageSize,
+            TotalPages = (int)Math.Ceiling(totalCount / (double)paginationParams.PageSize)
+        };
     }
 
     public async Task<JourneyDto?> GetJourneyByIdAsync(int id)

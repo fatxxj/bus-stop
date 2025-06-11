@@ -1,6 +1,6 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, ViewChild } from '@angular/core';
 import { Stop } from '../../../models/stop.model';
-import { StopService } from '../../../services/stop.service';
+import { StopService, PaginatedResponse } from '../../../services/stop.service';
 import { MatTableDataSource, MatTableModule } from '@angular/material/table';
 import { MatDialog, MatDialogModule } from '@angular/material/dialog';
 import { MatButtonModule } from '@angular/material/button';
@@ -8,7 +8,7 @@ import { MatIconModule } from '@angular/material/icon';
 import { MatTooltipModule } from '@angular/material/tooltip';
 import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatInputModule } from '@angular/material/input';
-import { MatPaginatorModule } from '@angular/material/paginator';
+import { MatPaginatorModule, MatPaginator, PageEvent } from '@angular/material/paginator';
 import { MatSortModule } from '@angular/material/sort';
 import { CommonModule } from '@angular/common';
 import { StopFormComponent } from '../stop-form/stop-form.component';
@@ -38,6 +38,11 @@ export class StopListComponent implements OnInit {
   dataSource = new MatTableDataSource<Stop>();
   loading = false;
   isAuthenticated = false;
+  totalItems = 0;
+  pageSize = 4;
+  currentPage = 1;
+
+  @ViewChild(MatPaginator) paginator!: MatPaginator;
 
   constructor(
     private stopService: StopService,
@@ -55,9 +60,10 @@ export class StopListComponent implements OnInit {
 
   loadStops(): void {
     this.loading = true;
-    this.stopService.getStops().subscribe({
-      next: (stops) => {
-        this.dataSource.data = stops;
+    this.stopService.getStops(this.currentPage, this.pageSize).subscribe({
+      next: (response: PaginatedResponse<Stop>) => {
+        this.dataSource.data = response.items;
+        this.totalItems = response.totalCount;
         this.loading = false;
       },
       error: (error) => {
@@ -65,6 +71,12 @@ export class StopListComponent implements OnInit {
         this.loading = false;
       }
     });
+  }
+
+  onPageChange(event: PageEvent): void {
+    this.currentPage = event.pageIndex + 1;
+    this.pageSize = event.pageSize;
+    this.loadStops();
   }
 
   openStopForm(stop?: Stop): void {

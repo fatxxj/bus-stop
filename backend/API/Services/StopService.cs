@@ -14,9 +14,14 @@ public class StopService : IStopService
         _context = context;
     }
 
-    public async Task<IEnumerable<StopDto>> GetAllStopsAsync()
+    public async Task<PaginatedResponse<StopDto>> GetAllStopsAsync(PaginationParams paginationParams)
     {
-        return await _context.Stops
+        var query = _context.Stops.AsQueryable();
+        var totalCount = await query.CountAsync();
+
+        var stops = await query
+            .Skip((paginationParams.PageNumber - 1) * paginationParams.PageSize)
+            .Take(paginationParams.PageSize)
             .Select(s => new StopDto
             {
                 Id = s.Id,
@@ -28,6 +33,15 @@ public class StopService : IStopService
                 Connections = s.JourneyStops.Count
             })
             .ToListAsync();
+
+        return new PaginatedResponse<StopDto>
+        {
+            Items = stops,
+            TotalCount = totalCount,
+            PageNumber = paginationParams.PageNumber,
+            PageSize = paginationParams.PageSize,
+            TotalPages = (int)Math.Ceiling(totalCount / (double)paginationParams.PageSize)
+        };
     }
 
     public async Task<StopDto?> GetStopByIdAsync(int id)

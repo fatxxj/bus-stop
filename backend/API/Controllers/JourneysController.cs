@@ -17,9 +17,9 @@ public class JourneysController : ControllerBase
     }
 
     [HttpGet]
-    public async Task<ActionResult<IEnumerable<JourneyDto>>> GetJourneys()
+    public async Task<ActionResult<PaginatedResponse<JourneyDto>>> GetJourneys([FromQuery] PaginationParams paginationParams)
     {
-        var journeys = await _journeyService.GetAllJourneysAsync();
+        var journeys = await _journeyService.GetAllJourneysAsync(paginationParams);
         return Ok(journeys);
     }
 
