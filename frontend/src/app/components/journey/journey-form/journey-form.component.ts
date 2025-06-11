@@ -14,6 +14,7 @@ import { MatListModule } from '@angular/material/list';
 import { MatIconModule } from '@angular/material/icon';
 import { MatTimepickerModule } from '@angular/material/timepicker';
 import { MatNativeDateModule } from '@angular/material/core';
+import { MatSnackBar, MatSnackBarModule } from '@angular/material/snack-bar';
 
 @Component({
   selector: 'app-journey-form',
@@ -32,7 +33,8 @@ import { MatNativeDateModule } from '@angular/material/core';
     DragDropModule,
     MatIconModule,
     MatTimepickerModule,
-    MatNativeDateModule
+    MatNativeDateModule,
+    MatSnackBarModule
   ]
 })
 export class JourneyFormComponent implements OnInit {
@@ -46,6 +48,7 @@ export class JourneyFormComponent implements OnInit {
     private journeyService: JourneyService,
     private stopService: StopService,
     private dialogRef: MatDialogRef<JourneyFormComponent>,
+    private snackBar: MatSnackBar,
     @Inject(MAT_DIALOG_DATA) public data: any // Journey
   ) {
     this.journeyForm = this.fb.group({
@@ -190,8 +193,18 @@ export class JourneyFormComponent implements OnInit {
             this.dialogRef.close(true);
           },
           error: (error: any) => {
-            console.error('Error updating journey:', error);
             this.isFormSubmitting = false;
+            if (error.error === 'Invalid journey stops sequence') {
+              this.snackBar.open('Invalid stop sequence: Each stop must have a later passing time than the previous stop', undefined, {
+                duration: 5000,
+                panelClass: ['error-snackbar']
+              });
+            } else {
+              this.snackBar.open('An error occurred while updating the journey', undefined, {
+                duration: 5000,
+                panelClass: ['error-snackbar']
+              });
+            }
           }
         });
       } else {
@@ -202,6 +215,17 @@ export class JourneyFormComponent implements OnInit {
           error: (error: any) => {
             console.error('Error creating journey:', error);
             this.isFormSubmitting = false;
+            if (error.error === 'Invalid journey stops sequence') {
+              this.snackBar.open('Invalid stop sequence: Each stop must have a later passing time than the previous stop', undefined, {
+                duration: 5000,
+                panelClass: ['error-snackbar']
+              });
+            } else {
+              this.snackBar.open('An error occurred while creating the journey', undefined, {
+                duration: 5000,
+                panelClass: ['error-snackbar']
+              });
+            }
           }
         });
       }
