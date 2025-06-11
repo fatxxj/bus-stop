@@ -525,8 +525,9 @@
 }
 
 .stop-card.selected {
-  border-color: #10b981;
-  background: linear-gradient(135deg, rgba(16, 185, 129, 0.05) 0%, rgba(16, 185, 129, 0.1) 100%);
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-start;
 }
 
 .stop-header {
@@ -602,7 +603,12 @@
 
 /* Stop Info */
 .stop-info {
-  flex: 1;
+  display: flex;
+  flex-direction: column;
+  flex: 1 1 auto;
+  justify-content: flex-start;
+  min-height: 0;
+  position: relative;
 }
 
 .stop-code {
@@ -1000,7 +1006,9 @@
 }
 
 .stop-time {
-  margin-top: 8px;
+  margin-top: auto;
+  padding-top: 12px;
+  align-self: stretch;
 }
 
 .time-field {
