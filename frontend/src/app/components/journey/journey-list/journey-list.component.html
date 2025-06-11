@@ -174,13 +174,7 @@
     </div>
   </div>
 
-  <mat-paginator
-    [length]="totalItems"
-    [pageSize]="pageSize"
-    [pageSizeOptions]="[4, 8, 16, 32]"
-    (page)="onPageChange($event)"
-    aria-label="Select page">
-  </mat-paginator>
+
 
   <!-- Empty State -->
   <div class="empty-state" *ngIf="!loading && dataSource.data.length === 0">
@@ -191,7 +185,7 @@
       </svg>
     </div>
     <h3>No Journeys Found</h3>
-    <p>Start by creating your first bus journey route to manage your transportation network.</p>
+    <p>Start by creating your first bus journey route to manage your transportation network. Login as admin to do so!</p>
     <button class="btn btn-primary" (click)="openJourneyForm()" *ngIf="isAuthenticated">
       <svg width="20" height="20" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
         <path d="M12 5V19M5 12H19" stroke="currentColor" stroke-width="2"/>
@@ -199,6 +193,14 @@
       Create First Journey
     </button>
   </div>
+
+    <mat-paginator
+    [length]="totalItems"
+    [pageSize]="pageSize"
+    [pageSizeOptions]="[4, 8, 16, 32]"
+    (page)="onPageChange($event)"
+    aria-label="Select page">
+  </mat-paginator>
 
   <!-- Loading State -->
   <div class="loading-state" *ngIf="loading">

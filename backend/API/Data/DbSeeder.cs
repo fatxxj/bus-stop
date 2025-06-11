@@ -47,7 +47,7 @@ public static class DbSeeder
             Code = "MIL",
             Description = "Milan Central Station",
             CityName = "Milan",
-            X = 45.4642, // Milan coordinates
+            X = 45.4642,
             Y = 9.1900
         };
 
@@ -56,68 +56,64 @@ public static class DbSeeder
             Code = "ROM",
             Description = "Rome Termini Station",
             CityName = "Rome",
-            X = 41.9028, // Rome coordinates
+            X = 41.9028,
             Y = 12.4964
         };
 
-        await context.Stops.AddRangeAsync(milanStop, romeStop);
-        await context.SaveChangesAsync();
-
-        // Create journeys
-        var milanToRome = new Journey
+        var florenceStop = new Stop
         {
-            Code = "MIL-ROM",
-            Description = "Milan to Rome Express"
+            Code = "FLR",
+            Description = "Florence Santa Maria Novella Station",
+            CityName = "Florence",
+            X = 43.7696,
+            Y = 11.2558
         };
 
-        var romeToMilan = new Journey
+        var veniceStop = new Stop
         {
-            Code = "ROM-MIL",
-            Description = "Rome to Milan Express"
+            Code = "VCE",
+            Description = "Venice Santa Lucia Station",
+            CityName = "Venice",
+            X = 45.4371,
+            Y = 12.3326
         };
 
-        await context.Journeys.AddRangeAsync(milanToRome, romeToMilan);
-        await context.SaveChangesAsync();
-
-        // Create journey stops
-        var milanToRomeStops = new List<JourneyStop>
+        var naplesStop = new Stop
         {
-            new JourneyStop
-            {
-                JourneyId = milanToRome.Id,
-                StopId = milanStop.Id,
-                Order = 1,
-                PassingTime = new TimeSpan(8, 0, 0) // 8:00 AM
-            },
-            new JourneyStop
-            {
-                JourneyId = milanToRome.Id,
-                StopId = romeStop.Id,
-                Order = 2,
-                PassingTime = new TimeSpan(12, 30, 0) // 12:30 PM
-            }
+            Code = "NAP",
+            Description = "Naples Central Station",
+            CityName = "Naples",
+            X = 40.8518,
+            Y = 14.2681
         };
 
-        var romeToMilanStops = new List<JourneyStop>
+        var turinStop = new Stop
         {
-            new JourneyStop
-            {
-                JourneyId = romeToMilan.Id,
-                StopId = romeStop.Id,
-                Order = 1,
-                PassingTime = new TimeSpan(14, 0, 0) // 2:00 PM
-            },
-            new JourneyStop
-            {
-                JourneyId = romeToMilan.Id,
-                StopId = milanStop.Id,
-                Order = 2,
-                PassingTime = new TimeSpan(18, 30, 0) // 6:30 PM
-            }
+            Code = "TRN",
+            Description = "Turin Porta Nuova Station",
+            CityName = "Turin",
+            X = 45.0703,
+            Y = 7.6869
         };
 
-        await context.JourneyStops.AddRangeAsync(milanToRomeStops);
-        await context.JourneyStops.AddRangeAsync(romeToMilanStops);
+        var bolognaStop = new Stop
+        {
+            Code = "BLQ",
+            Description = "Bologna Central Station",
+            CityName = "Bologna",
+            X = 44.4949,
+            Y = 11.3426
+        };
+
+        await context.Stops.AddRangeAsync(
+            milanStop,
+            romeStop,
+            florenceStop,
+            veniceStop,
+            naplesStop,
+            turinStop,
+            bolognaStop
+        );
         await context.SaveChangesAsync();
     }
 } 
